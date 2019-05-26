@@ -1,0 +1,8 @@
+prefix=/home/vivek/Desktop/swarm/swarm_ws/devel
+
+Name: gopigo_controller
+Description: Description of gopigo_controller
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/vivek/Desktop/swarm/swarm_ws/devel/lib 
+Requires: 
