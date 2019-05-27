@@ -11,7 +11,8 @@ class NavTimed():
     self.cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
     self.time_start = rospy.Time.now()
     self.time_to_run = rospy.get_param('~time_to_run',10)
-    self.v_target = rospy.get_param('~v_target',0.1)
+    self.vx_target = rospy.get_param('~vx_target',0.1)
+    self.vy_target = rospy.get_param('~vy_target',0)
     self.w_target = rospy.get_param('~w_target',0)    
 
   def update(self):
@@ -20,7 +21,8 @@ class NavTimed():
       rospy.signal_shutdown('Done nav_forward')
 
     move_cmd = Twist()
-    move_cmd.linear.x = self.v_target
+    move_cmd.linear.x = self.vx_target
+    move_cmd.linear.y = self.vy_target
     move_cmd.angular.z = self.w_target
     self.cmd_vel_pub.publish(move_cmd)
 

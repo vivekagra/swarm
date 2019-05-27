@@ -1,0 +1,8 @@
+prefix=/home/vivek/Desktop/swarm/swarm_ws/install
+
+Name: jarvis_state_updater
+Description: Description of jarvis_state_updater
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/vivek/Desktop/swarm/swarm_ws/install/lib 
+Requires: 

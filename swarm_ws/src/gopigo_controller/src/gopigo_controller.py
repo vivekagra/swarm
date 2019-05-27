@@ -11,79 +11,116 @@ class ControlsToMotors:
   def __init__(self):
     rospy.init_node('gopigo_controller')
     self.rate = rospy.get_param('~rate', 50)
+    
+    # set pid constants
     self.Kp = rospy.get_param('~Kp', 1.0)
     self.Ki = rospy.get_param('~Ki', 1.0)
     self.Kd = rospy.get_param('~Kd', 1.0)
+
+
+    """  CHANGE PARAMETERS  BY MEASUREMENT  """
 
     # Wheel can turn ~17 ticks per second which is approx 5.34 rad / s when motor_cmd = 255
     self.motor_max_angular_vel = rospy.get_param('~motor_max_angular_vel',5.32) 
     # Wheel can turn ~6 ticks per second which is approx 5.34 rad / s when motor_cmd = 125
     self.motor_min_angular_vel = rospy.get_param('~motor_min_angular_vel',1.28)
+    
     # Corresponding motor commands
     self.motor_cmd_max = rospy.get_param('~motor_cmd_max',255)
     self.motor_cmd_min = rospy.get_param('~motor_cmd_min',110)
 
     self.R = rospy.get_param('~robot_wheel_radius', 0.03)
     self.pid_on = rospy.get_param('~pid_on',True)
-    self.gopigo_on = rospy.get_param('~gopigo_on',False)
-    if self.gopigo_on:
-      import gopigo
-      import atexit
+    self.controller_on = rospy.get_param('~gopigo_on',False)
+    
+    if self.controller_on:
+      import gopigo ############################## check it  ###############################
+      import atexit ############################## check it  ###############################
       atexit.register(gopigo.stop)
     # (Optional) Publish the computed angular velocity targets
-    self.lwheel_angular_vel_target_pub = rospy.Publisher('lwheel_angular_vel_target', Float32, queue_size=10)
-    self.rwheel_angular_vel_target_pub = rospy.Publisher('rwheel_angular_vel_target', Float32, queue_size=10)
-
+    self.fornt_lwheel_angular_vel_target_pub = rospy.Publisher('front_lwheel_angular_vel_target', Float32, queue_size=10)
+    self.front_rwheel_angular_vel_target_pub = rospy.Publisher('front_rwheel_angular_vel_target', Float32, queue_size=10)
+    self.rear_lwheel_angular_vel_target_pub  = rospy.Publisher('rear_lwheel_angular_vel_target' , Float32, queue_size=10)
+    self.rear_rwheel_angular_vel_target_pub  = rospy.Publisher('rear_rwheel_angular_vel_target' , Float32, queue_size=10)
+ 
     # (Optional) Publish the computed angular velocity control command
-    self.lwheel_angular_vel_control_pub = rospy.Publisher('lwheel_angular_vel_control', Float32, queue_size=10)
-    self.rwheel_angular_vel_control_pub = rospy.Publisher('rwheel_angular_vel_control', Float32, queue_size=10)
+    self.front_lwheel_angular_vel_control_pub = rospy.Publisher('front_lwheel_angular_vel_control', Float32, queue_size=10)
+    self.front_rwheel_angular_vel_control_pub = rospy.Publisher('front_rwheel_angular_vel_control', Float32, queue_size=10)
+    self.rear_lwheel_angular_vel_control_pub  = rospy.Publisher('rear_lwheel_angular_vel_control' , Float32, queue_size=10)
+    self.rear_rwheel_angular_vel_control_pub  = rospy.Publisher('rear_rwheel_angular_vel_control' , Float32, queue_size=10)
 
     # (Optional) Publish the computed angular velocity motor command
-    self.lwheel_angular_vel_motor_pub = rospy.Publisher('lwheel_angular_vel_motor', Float32, queue_size=10)
-    self.rwheel_angular_vel_motor_pub = rospy.Publisher('rwheel_angular_vel_motor', Float32, queue_size=10)
+    self.front_lwheel_angular_vel_motor_pub = rospy.Publisher('front_lwheel_angular_vel_motor', Float32, queue_size=10)
+    self.front_rwheel_angular_vel_motor_pub = rospy.Publisher('front_rwheel_angular_vel_motor', Float32, queue_size=10)
+    self.rear_lwheel_angular_vel_motor_pub  = rospy.Publisher('rear_lwheel_angular_vel_motor' , Float32, queue_size=10)
+    self.rear_rwheel_angular_vel_motor_pub  = rospy.Publisher('rear_rwheel_angular_vel_motor' , Float32, queue_size=10)
 
     # Read in encoders for PID control
-    self.lwheel_angular_vel_enc_sub = rospy.Subscriber('lwheel_angular_vel_enc', Float32, self.lwheel_angular_vel_enc_callback)    
-    self.rwheel_angular_vel_enc_sub = rospy.Subscriber('rwheel_angular_vel_enc', Float32, self.rwheel_angular_vel_enc_callback)    
+    self.front_lwheel_angular_vel_enc_sub = rospy.Subscriber('front_lwheel_angular_vel_enc', Float32, self.front_lwheel_angular_vel_enc_callback)    
+    self.front_rwheel_angular_vel_enc_sub = rospy.Subscriber('front_rwheel_angular_vel_enc', Float32, self.front_rwheel_angular_vel_enc_callback)    
+    self.rear_lwheel_angular_vel_enc_sub  = rospy.Subscriber('rear_lwheel_angular_vel_enc',  Float32, self.rear_lwheel_angular_vel_enc_callback)
+    self.rear_rwheel_angular_vel_enc_sub  = rospy.Subscriber('rear_rwheel_angular_vel_enc',  Float32, self.rear_rwheel_angular_vel_enc_callback)
 
     # Read in tangential velocity targets
-    self.lwheel_tangent_vel_target_sub = rospy.Subscriber('lwheel_tangent_vel_target', Float32, self.lwheel_tangent_vel_target_callback)
-    self.rwheel_tangent_vel_target_sub = rospy.Subscriber('rwheel_tangent_vel_target', Float32, self.rwheel_tangent_vel_target_callback)
-
+    self.front_lwheel_tangent_vel_target_sub = rospy.Subscriber('front_lwheel_tangent_vel_target', Float32, self.front_lwheel_tangent_vel_target_callback)
+    self.front_rwheel_tangent_vel_target_sub = rospy.Subscriber('front_rwheel_tangent_vel_target', Float32, self.front_rwheel_tangent_vel_target_callback)
+    self.rear_lwheel_tangent_vel_target_sub = rospy.Subscriber('rear_lwheel_tangent_vel_target', Float32, self.rear_lwheel_tangent_vel_target_callback)
+    self.rear_rwheel_tangent_vel_target_sub = rospy.Subscriber('rear_rwheel_tangent_vel_target', Float32, self.rear_rwheel_tangent_vel_target_callback)
 
     # Tangential velocity target
-    self.lwheel_tangent_vel_target = 0;
-    self.rwheel_tangent_vel_target = 0;
+    self.front_lwheel_tangent_vel_target = 0;
+    self.front_rwheel_tangent_vel_target = 0;
+    self.rear_lwheel_tangent_vel_target  = 0;
+    self.rear_rwheel_tangent_vel_target  = 0;
 
     # Angular velocity target
-    self.lwheel_angular_vel_target = 0
-    self.rwheel_angular_vel_target = 0
+    self.front_lwheel_angular_vel_target = 0
+    self.front_rwheel_angular_vel_target = 0
+    self.rear_lwheel_angular_vel_target = 0
+    self.rear_rwheel_angular_vel_target = 0
     
     # Angular velocity encoder readings
-    self.lwheel_angular_vel_enc = 0
-    self.rwheel_angular_vel_enc = 0
+    self.front_lwheel_angular_vel_enc = 0
+    self.front_rwheel_angular_vel_enc = 0
+    self.rear_lwheel_angular_vel_enc = 0
+    self.rear_rwheel_angular_vel_enc = 0
 
     # PID control variables
-    self.lwheel_pid = {}
-    self.rwheel_pid = {}
+    self.front_lwheel_pid = {}
+    self.front_rwheel_pid = {}
+    self.rear_lwheel_pid = {}
+    self.rear_rwheel_pid = {}
+
 
   # ==================================================
   # Read in tangential velocity targets
   # ==================================================
-  def lwheel_tangent_vel_target_callback(self, msg):
-    self.lwheel_tangent_vel_target = msg.data
+  def front_lwheel_tangent_vel_target_callback(self, msg):
+    self.front_lwheel_tangent_vel_target = msg.data
 
-  def rwheel_tangent_vel_target_callback(self, msg):
-    self.rwheel_tangent_vel_target = msg.data
+  def front_rwheel_tangent_vel_target_callback(self, msg):
+    self.front_rwheel_tangent_vel_target = msg.data
+   
+  def rear_lwheel_tangent_vel_target_callback(self, msg):
+    self.rear_lwheel_tangent_vel_target = msg.data
 
+  def rear_rwheel_tangent_vel_target_callback(self, msg):
+    self.rear_rwheel_tangent_vel_target = msg.data
+ 
   # ==================================================
   # Read in encoder readings for PID
   # ==================================================
-  def lwheel_angular_vel_enc_callback(self, msg):
-    self.lwheel_angular_vel_enc = msg.data
+  def front_lwheel_angular_vel_enc_callback(self, msg):
+    self.front_lwheel_angular_vel_enc = msg.data
 
-  def rwheel_angular_vel_enc_callback(self, msg):
-    self.rwheel_angular_vel_enc = msg.data
+  def front_rwheel_angular_vel_enc_callback(self, msg):
+    self.front_rwheel_angular_vel_enc = msg.data
+
+  def rear_lwheel_angular_vel_enc_callback(self, msg):
+    self.rear_lwheel_angular_vel_enc = msg.data
+
+  def rear_rwheel_angular_vel_enc_callback(self, msg):
+    self.rear_rwheel_angular_vel_enc = msg.data
 
   # ==================================================
   # Update motor commands
@@ -98,7 +135,7 @@ class ControlsToMotors:
     angular_vel = tangent_vel / self.R;
     return angular_vel
 
-
+  ################################# read it #############################
   # PID control
   def pid_control(self,wheel_pid,target,state):
 
@@ -153,76 +190,130 @@ class ControlsToMotors:
 
     return motor_cmd
 
+  ############# decide various actions here for movement of robot ################
   # Send motor command to robot
-  # motor1 for left wheel. motor1(0, ?) tells wheel to move backwards. motor1(1, ?) tells wheel to move forwards
-  # motor2 for right wheel.
-  def motorcmd_2_robot(self, wheel='left', motor_command=0):
+  # motor1 for front_right wheel. motor1(0, ?) tells wheel to move backwards. motor1(1, ?) tells wheel to move forwards
+  # motor2 for front_left wheel.
+  # motor3 for rear_left wheel.
+  # motor4 for rear_right wheel.
+  def motorcmd_2_robot(self, wheel='front_left', motor_command=0):
     if self.gopigo_on:
       motor_command_raw = int(abs(motor_command))
       import gopigo
-      if wheel == 'left':
-        if motor_command >= 0: gopigo.motor1(1,motor_command_raw)
-        elif motor_command < 0: gopigo.motor1(0,motor_command_raw)
-      if wheel == 'right':
+      if wheel == 'front_left':
         if motor_command >= 0: gopigo.motor2(1,motor_command_raw)
         elif motor_command < 0: gopigo.motor2(0,motor_command_raw)
+      if wheel == 'front_right':
+        if motor_command >= 0: gopigo.motor1(1,motor_command_raw)
+        elif motor_command < 0: gopigo.motor1(0,motor_command_raw)
+      if wheel == 'rear_left':
+        if motor_command >= 0: gopigo.motor3(1,motor_command_raw)
+        elif motor_command < 0: gopigo.motor3(0,motor_command_raw)
+      if wheel == 'rear_right':
+        if motor_command >= 0: gopigo.motor4(1,motor_command_raw)
+        elif motor_command < 0: gopigo.motor4(0,motor_command_raw)
 
-  def lwheel_update(self):
+  def front_lwheel_update(self):
     # Compute target angular velocity
-    self.lwheel_angular_vel_target = self.tangentvel_2_angularvel(self.lwheel_tangent_vel_target)
-    self.lwheel_angular_vel_target_pub.publish(self.lwheel_angular_vel_target)
+    self.front_lwheel_angular_vel_target = self.tangentvel_2_angularvel(self.front_lwheel_tangent_vel_target)
+    self.front_lwheel_angular_vel_target_pub.publish(self.front_lwheel_angular_vel_target)
     
     # If we want to adjust target angular velocity using PID controller to incorporate encoder readings
     if self.pid_on: 
-      self.lwheel_angular_vel_target = self.pid_control(self.lwheel_pid, self.lwheel_angular_vel_target,self.lwheel_angular_vel_enc)
-    self.lwheel_angular_vel_control_pub.publish(self.lwheel_angular_vel_target)
+      self.front_lwheel_angular_vel_target = self.pid_control(self.front_lwheel_pid, self.front_lwheel_angular_vel_target,self.front_lwheel_angular_vel_enc)
+    self.front_lwheel_angular_vel_control_pub.publish(self.front_lwheel_angular_vel_target)
 
     # Compute motor command
-    lwheel_motor_cmd = self.angularvel_2_motorcmd(self.lwheel_angular_vel_target)
-    self.lwheel_angular_vel_motor_pub.publish(lwheel_motor_cmd)    
+    front_lwheel_motor_cmd = self.angularvel_2_motorcmd(self.front_lwheel_angular_vel_target)
+    self.front_lwheel_angular_vel_motor_pub.publish(front_lwheel_motor_cmd)    
 
     # Send motor command
-    self.motorcmd_2_robot('left',lwheel_motor_cmd)
+    self.motorcmd_2_robot('front_left',front_lwheel_motor_cmd)
 
-  def rwheel_update(self):
+  def front_rwheel_update(self):
     # Compute target angular velocity
-    self.rwheel_angular_vel_target = self.tangentvel_2_angularvel(self.rwheel_tangent_vel_target)
-    self.rwheel_angular_vel_target_pub.publish(self.rwheel_angular_vel_target)
+    self.front_rwheel_angular_vel_target = self.tangentvel_2_angularvel(self.front_rwheel_tangent_vel_target)
+    self.front_rwheel_angular_vel_target_pub.publish(self.front_rwheel_angular_vel_target)
     
     # If we want to adjust target angular velocity using PID controller to incorporate encoder readings
     if self.pid_on: 
-      self.rwheel_angular_vel_target = self.pid_control(self.rwheel_pid, self.rwheel_angular_vel_target,self.rwheel_angular_vel_enc)
-    self.rwheel_angular_vel_control_pub.publish(self.rwheel_angular_vel_target)
+      self.front_rwheel_angular_vel_target = self.pid_control(self.front_rwheel_pid, self.front_rwheel_angular_vel_target,self.front_rwheel_angular_vel_enc)
+    self.front_rwheel_angular_vel_control_pub.publish(self.front_rwheel_angular_vel_target)
 
     # Compute motor command
-    rwheel_motor_cmd = self.angularvel_2_motorcmd(self.rwheel_angular_vel_target)
-    self.rwheel_angular_vel_motor_pub.publish(rwheel_motor_cmd)    
+    front_rwheel_motor_cmd = self.angularvel_2_motorcmd(self.front_rwheel_angular_vel_target)
+    self.front_rwheel_angular_vel_motor_pub.publish(front_rwheel_motor_cmd)    
 
     # Send motor command
-    self.motorcmd_2_robot('right',rwheel_motor_cmd)
+    self.motorcmd_2_robot('front_right',front_rwheel_motor_cmd)
+
+  def rear_lwheel_update(self):
+    # Compute target angular velocity
+    self.rear_lwheel_angular_vel_target = self.tangentvel_2_angularvel(self.rear_lwheel_tangent_vel_target)
+    self.rear_lwheel_angular_vel_target_pub.publish(self.rear_lwheel_angular_vel_target)
+    
+    # If we want to adjust target angular velocity using PID controller to incorporate encoder readings
+    if self.pid_on: 
+      self.lwheel_angular_vel_target = self.pid_control(self.rear_lwheel_pid, self.rear_lwheel_angular_vel_target,self.rear_lwheel_angular_vel_enc)
+    self.rear_lwheel_angular_vel_control_pub.publish(self.rear_lwheel_angular_vel_target)
+
+    # Compute motor command
+    rear_lwheel_motor_cmd = self.angularvel_2_motorcmd(self.rear_lwheel_angular_vel_target)
+    self.rear_lwheel_angular_vel_motor_pub.publish(rear_lwheel_motor_cmd)    
+
+    # Send motor command
+    self.motorcmd_2_robot('rear_left',rear_lwheel_motor_cmd)
+
+  def rear_rwheel_update(self):
+    # Compute target angular velocity
+    self.rear_rwheel_angular_vel_target = self.tangentvel_2_angularvel(self.rear_rwheel_tangent_vel_target)
+    self.rear_rwheel_angular_vel_target_pub.publish(self.rear_rwheel_angular_vel_target)
+    
+    # If we want to adjust target angular velocity using PID controller to incorporate encoder readings
+    if self.pid_on: 
+      self.rear_rwheel_angular_vel_target = self.pid_control(self.rear_rwheel_pid, self.rear_rwheel_angular_vel_target,self.rear_rwheel_angular_vel_enc)
+    self.rear_rwheel_angular_vel_control_pub.publish(self.rear_rwheel_angular_vel_target)
+
+    # Compute motor command
+    rear_rwheel_motor_cmd = self.angularvel_2_motorcmd(self.rear_rwheel_angular_vel_target)
+    self.rear_rwheel_angular_vel_motor_pub.publish(rear_rwheel_motor_cmd)    
+
+    # Send motor command
+    self.motorcmd_2_robot('rear_right',rear_rwheel_motor_cmd)
 
   # When given no commands for some time, do not move
   def spin(self):
-    rospy.loginfo("Start gopigo_controller")
+    rospy.loginfo("Start motor_controller")
     rate = rospy.Rate(self.rate)
     
     rospy.on_shutdown(self.shutdown)
 
     while not rospy.is_shutdown():
-      self.rwheel_update()
-      self.lwheel_update()
+      self.front_rwheel_update()
+      self.front_lwheel_update()
+      self.rear_rwheel_update()
+      self.rear_lwheel_update()
       rate.sleep()
     rospy.spin();
 
   def shutdown(self):
-    rospy.loginfo("Stop gopigo_controller")
+    rospy.loginfo("Stop motor_controller")
   	# Stop message
-    self.lwheel_angular_vel_target_pub.publish(0)
-    self.rwheel_angular_vel_target_pub.publish(0)
-    self.lwheel_angular_vel_control_pub.publish(0)
-    self.rwheel_angular_vel_control_pub.publish(0)
-    self.lwheel_angular_vel_motor_pub.publish(0)
-    self.rwheel_angular_vel_motor_pub.publish(0)
+    self.front_lwheel_angular_vel_target_pub.publish(0)
+    self.front_rwheel_angular_vel_target_pub.publish(0)
+    self.rear_lwheel_angular_vel_target_pub.publish(0)
+    self.rear_rwheel_angular_vel_target_pub.publish(0)
+    
+    self.front_lwheel_angular_vel_control_pub.publish(0)
+    self.front_rwheel_angular_vel_control_pub.publish(0)
+    self.rear_lwheel_angular_vel_control_pub.publish(0)
+    self.rear_rwheel_angular_vel_control_pub.publish(0)
+    
+    self.front_lwheel_angular_vel_motor_pub.publish(0)
+    self.front_rwheel_angular_vel_motor_pub.publish(0)
+    self.rear_lwheel_angular_vel_motor_pub.publish(0)
+    self.rear_rwheel_angular_vel_motor_pub.publish(0)
+    
     rospy.sleep(1)        
 
 def main():

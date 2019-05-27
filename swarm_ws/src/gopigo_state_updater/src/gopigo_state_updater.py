@@ -8,21 +8,29 @@ import numpy
 # Messages
 from std_msgs.msg import Float32
 
-# Query GoPiGo robot for left and right wheel encoders.
+# Query Jarvis robot for front_left, front_right, rear_left and rear_right wheel encoders.
 # Publish the estimated left and right angular wheel velocities
 class WheelEncoderPublisher:
   def __init__(self):
-    rospy.init_node('gopigo_state_updater')
+    rospy.init_node('jarvis_state_updater')
     # Read in tangential velocity targets
-    self.lwheel_angular_vel_motor_sub = rospy.Subscriber('lwheel_angular_vel_motor', Float32, self.lwheel_angular_vel_motor_callback)
-    self.rwheel_angular_vel_motor_sub = rospy.Subscriber('rwheel_angular_vel_motor', Float32, self.rwheel_angular_vel_motor_callback)
+    
+    self.front_lwheel_angular_vel_motor_sub = rospy.Subscriber('front_lwheel_angular_vel_motor', Float32, self.front_lwheel_angular_vel_motor_callback)
+    self.front_rwheel_angular_vel_motor_sub = rospy.Subscriber('front_rwheel_angular_vel_motor', Float32, self.front_rwheel_angular_vel_motor_callback)
+    self.rear_lwheel_angular_vel_motor_sub  = rospy.Subscriber('rear_lwheel_angular_vel_motor' , Float32, self.rear_lwheel_angular_vel_motor_callback)
+    self.rear_rwheel_angular_vel_motor_sub  = rospy.Subscriber('rear_rwheel_angular_vel_motor' , Float32, self.rear_rwheel_angular_vel_motor_callback)
 
-    self.lwheel_angular_vel_control_pub = rospy.Subscriber('lwheel_angular_vel_control', Float32, self.lwheel_angular_vel_control_callback)
-    self.rwheel_angular_vel_control_pub = rospy.Subscriber('rwheel_angular_vel_control', Float32, self.rwheel_angular_vel_control_callback)
+    self.front_lwheel_angular_vel_control_pub = rospy.Subscriber('front_lwheel_angular_vel_control', Float32, self.front_lwheel_angular_vel_control_callback)
+    self.front_rwheel_angular_vel_control_pub = rospy.Subscriber('front_rwheel_angular_vel_control', Float32, self.front_rwheel_angular_vel_control_callback)
+    self.rear_lwheel_angular_vel_control_pub = rospy.Subscriber('rear_lwheel_angular_vel_control', Float32, self.rear_lwheel_angular_vel_control_callback)
+    self.rear_rwheel_angular_vel_control_pub = rospy.Subscriber('rear_rwheel_angular_vel_control', Float32, self.rear_rwheel_angular_vel_control_callback)
 
 
-    self.lwheel_angular_vel_enc_pub = rospy.Publisher('lwheel_angular_vel_enc', Float32, queue_size=10)
-    self.rwheel_angular_vel_enc_pub = rospy.Publisher('rwheel_angular_vel_enc', Float32, queue_size=10)
+    self.front_lwheel_angular_vel_enc_pub = rospy.Publisher('front_lwheel_angular_vel_enc', Float32, queue_size=10)
+    self.front_rwheel_angular_vel_enc_pub = rospy.Publisher('front_rwheel_angular_vel_enc', Float32, queue_size=10)
+    self.rear_lwheel_angular_vel_enc_pub = rospy.Publisher('rear_lwheel_angular_vel_enc', Float32, queue_size=10)
+    self.rear_rwheel_angular_vel_enc_pub = rospy.Publisher('rear_rwheel_angular_vel_enc', Float32, queue_size=10)
+
     self.rate = rospy.get_param('~rate', 10)
     self.err_tick_incr = rospy.get_param('~err_tick_incr',20) # Filter out clearly erroneous encoder readings
     self.time_prev_update = rospy.Time.now();

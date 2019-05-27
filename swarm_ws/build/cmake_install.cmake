@@ -121,8 +121,10 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/vivek/Desktop/swarm/swarm_ws/build/diffdrive_odom/cmake_install.cmake")
   include("/home/vivek/Desktop/swarm/swarm_ws/build/gopigo_controller/cmake_install.cmake")
   include("/home/vivek/Desktop/swarm/swarm_ws/build/gopigo_state_updater/cmake_install.cmake")
+  include("/home/vivek/Desktop/swarm/swarm_ws/build/jarvis_state_updater/cmake_install.cmake")
   include("/home/vivek/Desktop/swarm/swarm_ws/build/mecanumdrive_controller/cmake_install.cmake")
   include("/home/vivek/Desktop/swarm/swarm_ws/build/nav_behaviors/cmake_install.cmake")
+  include("/home/vivek/Desktop/swarm/swarm_ws/build/omnidrive_odometry/cmake_install.cmake")
 
 endif()
 
