@@ -14,7 +14,7 @@ from geometry_msgs.msg import Point, Quaternion, Twist
 # Publish the estimated velocity update
 class OdomPublisher:
   def __init__(self):
-    rospy.init_node('diffdrive_odom')
+    rospy.init_node('omnidrive_odom')
     
     self.lwheel_angular_vel_enc_sub = rospy.Subscriber('lwheel_angular_vel_enc', Float32, self.lwheel_angular_vel_enc_callback)    
     self.rwheel_angular_vel_enc_sub = rospy.Subscriber('rwheel_angular_vel_enc', Float32, self.rwheel_angular_vel_enc_callback)    
@@ -44,18 +44,24 @@ class OdomPublisher:
     self.pose = {'x':0, 'y': 0, 'th': 0}
     self.time_prev_update = rospy.Time.now();
 
-  def lwheel_angular_vel_enc_callback(self, msg):
-    self.lwheel_angular_vel_enc = msg.data
+  def front_lwheel_angular_vel_enc_callback(self, msg):
+    self.front_lwheel_angular_vel_enc = msg.data
 
-  def rwheel_angular_vel_enc_callback(self, msg):
-    self.rwheel_angular_vel_enc = msg.data
+  def front_rwheel_angular_vel_enc_callback(self, msg):
+    self.front_rwheel_angular_vel_enc = msg.data
+
+  def rear_lwheel_angular_vel_enc_callback(self, msg):
+    self.rear_lwheel_angular_vel_enc = msg.data
+
+  def rear_rwheel_angular_vel_enc_callback(self, msg):
+    self.rear_rwheel_angular_vel_enc = msg.data
 
   # Compute angular velocity target
   def angularvel_2_tangentvel(self,angular_vel):
     tangent_vel = angular_vel * self.R
     return tangent_vel
 
-  def pose_next(self, lwheel_tangent_vel_enc, rwheel_tangent_vel_enc):
+  def pose_next(self, front_lwheel_tangent_vel_enc, front_rwheel_tangent_vel_enc, rear_lwheel_tangent_vel_enc, rear_rwheel_tangent_vel_enc):
     x = self.pose['x']; y = self.pose['y']; th = self.pose['th']
     time_curr_update = rospy.Time.now()
     dt = (time_curr_update - self.time_prev_update).to_sec()
@@ -85,18 +91,24 @@ class OdomPublisher:
       x = pose_next[0,0]
       y = pose_next[1,0]
       th = pose_next[2,0]
-    return {'x':x, 'y':y, 'th':th,'v':v,'w':w}
+    return {'x':x, 'y':y, 'th':th,'vx':vx,'vy':vy,'w':w}
 
   def pose_update(self):
-    lwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.lwheel_angular_vel_enc)
-    rwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.rwheel_angular_vel_enc)
-    self.lwheel_tangent_vel_enc_pub.publish(lwheel_tangent_vel_enc)
-    self.rwheel_tangent_vel_enc_pub.publish(rwheel_tangent_vel_enc)
+    front_lwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.front_lwheel_angular_vel_enc)
+    front_rwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.front_rwheel_angular_vel_enc)
+    rear_lwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.rear_lwheel_angular_vel_enc)
+    rear_rwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.rear_rwheel_angular_vel_enc)
 
-    pose_next = self.pose_next(lwheel_tangent_vel_enc, rwheel_tangent_vel_enc)
+    self.front_lwheel_tangent_vel_enc_pub.publish(front_lwheel_tangent_vel_enc)
+    self.front_rwheel_tangent_vel_enc_pub.publish(front_rwheel_tangent_vel_enc)
+    self.rear_lwheel_tangent_vel_enc_pub.publish(rear_lwheel_tangent_vel_enc)
+    self.rear_rwheel_tangent_vel_enc_pub.publish(reaer_rwheel_tangent_vel_enc)
+
+    pose_next = self.pose_next(front_lwheel_tangent_vel_enc, front_rwheel_tangent_vel_enc, rear_lwheel_tangent_vel_enc, rear_rwheel_tangent_vel_enc)
 
     cmd_vel_enc = Twist()
-    cmd_vel_enc.linear.x = pose_next['v']
+    cmd_vel_enc.linear.x = pose_next['vx']
+    cmd_vel_enc.linear.y = pose_next['vy']
     cmd_vel_enc.angular.z = pose_next['w']
     self.cmd_vel_enc_pub.publish(cmd_vel_enc)
 
@@ -131,7 +143,7 @@ class OdomPublisher:
 
 
   def spin(self):
-    rospy.loginfo("Start diffdrive_odom")
+    rospy.loginfo("Start omnidrive_odom")
     rate = rospy.Rate(self.rate)
     rospy.on_shutdown(self.shutdown)
     while not rospy.is_shutdown():
@@ -140,7 +152,7 @@ class OdomPublisher:
     rospy.spin()
 
   def shutdown(self):
-    rospy.loginfo("Start diffdrive_odom")
+    rospy.loginfo("Stop omnidrive_odom")
     rospy.sleep(1)
 
 def main():
