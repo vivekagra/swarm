@@ -6,6 +6,7 @@
 # testing this directory and lists subdirectories to be tested as well.
 subdirs(gtest)
 subdirs(gopigo_description)
+subdirs(arduino)
 subdirs(diffdrive_odom)
 subdirs(gopigo_controller)
 subdirs(gopigo_state_updater)
