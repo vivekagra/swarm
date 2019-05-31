@@ -2,13 +2,13 @@
 
 import rospy
 import serial
-from std_msgs import string
+from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 
 class driver:
 	def __init__(self):
 		rospy.init_node('jarvis_driver',anonymous = True)
-		self.serial = serial.Serial('/dev/ttyUSB0',115200)
+		self.serial = serial.Serial('/dev/ttyACM0',57600)
 		self.get_arduino_message()
 	def get_arduino_message(self):
 		pub = rospy.Publisher('arduino',String,queue_size = 10)
@@ -16,7 +16,7 @@ class driver:
 		while not rospy.is_shutdown():
 			message = self.serial.readline()
 			pub.publish(message)
-			r.sleep()
+			rate.sleep()
 
 
 if __name__ == '__main__':

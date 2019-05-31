@@ -102,7 +102,7 @@ class OdomPublisher:
     self.front_lwheel_tangent_vel_enc_pub.publish(front_lwheel_tangent_vel_enc)
     self.front_rwheel_tangent_vel_enc_pub.publish(front_rwheel_tangent_vel_enc)
     self.rear_lwheel_tangent_vel_enc_pub.publish(rear_lwheel_tangent_vel_enc)
-    self.rear_rwheel_tangent_vel_enc_pub.publish(reaer_rwheel_tangent_vel_enc)
+    self.rear_rwheel_tangent_vel_enc_pub.publish(rear_rwheel_tangent_vel_enc)
 
     pose_next = self.pose_next(front_lwheel_tangent_vel_enc, front_rwheel_tangent_vel_enc, rear_lwheel_tangent_vel_enc, rear_rwheel_tangent_vel_enc)
 
