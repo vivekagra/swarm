@@ -5,8 +5,8 @@ project(nav_behaviors)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  diffdrive_controller
-  diffdrive_odom
+  mecanumdrive_controller
+  omnidrive_odometry
 )
 
 ## System dependencies are found with CMake's conventions

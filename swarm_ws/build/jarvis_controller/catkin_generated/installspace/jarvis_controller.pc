@@ -1,0 +1,8 @@
+prefix=/home/vivek/Desktop/swarm/swarm_ws/install
+
+Name: jarvis_controller
+Description: Description of jarvis_controller
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/vivek/Desktop/swarm/swarm_ws/install/lib 
+Requires: 

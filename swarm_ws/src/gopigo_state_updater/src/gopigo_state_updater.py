@@ -20,6 +20,7 @@ class WheelEncoderPublisher:
     self.rear_lwheel_angular_vel_motor_sub  = rospy.Subscriber('rear_lwheel_angular_vel_motor' , Float32, self.rear_lwheel_angular_vel_motor_callback)
     self.rear_rwheel_angular_vel_motor_sub  = rospy.Subscriber('rear_rwheel_angular_vel_motor' , Float32, self.rear_rwheel_angular_vel_motor_callback)
 
+
     self.front_lwheel_angular_vel_control_pub = rospy.Subscriber('front_lwheel_angular_vel_control', Float32, self.front_lwheel_angular_vel_control_callback)
     self.front_rwheel_angular_vel_control_pub = rospy.Subscriber('front_rwheel_angular_vel_control', Float32, self.front_rwheel_angular_vel_control_callback)
     self.rear_lwheel_angular_vel_control_pub = rospy.Subscriber('rear_lwheel_angular_vel_control', Float32, self.rear_lwheel_angular_vel_control_callback)
@@ -31,10 +32,13 @@ class WheelEncoderPublisher:
     self.rear_lwheel_angular_vel_enc_pub = rospy.Publisher('rear_lwheel_angular_vel_enc', Float32, queue_size=10)
     self.rear_rwheel_angular_vel_enc_pub = rospy.Publisher('rear_rwheel_angular_vel_enc', Float32, queue_size=10)
 
+
     self.rate = rospy.get_param('~rate', 10)
     self.err_tick_incr = rospy.get_param('~err_tick_incr',20) # Filter out clearly erroneous encoder readings
     self.time_prev_update = rospy.Time.now();
     self.gopigo_on = rospy.get_param('~gopigo_on',True)
+
+
     if self.gopigo_on:
       import gopigo   
       self.lwheel_encs = [gopigo.enc_read(1)]*5

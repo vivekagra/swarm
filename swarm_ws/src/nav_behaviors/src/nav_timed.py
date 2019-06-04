@@ -18,7 +18,7 @@ class NavTimed():
   def update(self):
     time_duration = (rospy.Time.now() - self.time_start).to_sec()
     if time_duration > self.time_to_run:
-      rospy.signal_shutdown('Done nav_forward')
+      rospy.signal_shutdown('Done Navigation')
 
     move_cmd = Twist()
     move_cmd.linear.x = self.vx_target
@@ -27,7 +27,7 @@ class NavTimed():
     self.cmd_vel_pub.publish(move_cmd)
 
   def spin(self):
-    rospy.loginfo("Start nav_forward")
+    rospy.loginfo("Start Navigation")
     rate = rospy.Rate(10)
     rospy.on_shutdown(self.shutdown)
     while not rospy.is_shutdown():
@@ -36,7 +36,7 @@ class NavTimed():
     rospy.spin()
 
   def shutdown(self):
-    rospy.loginfo("Stop nav_forward")
+    rospy.loginfo("Stop Navigation")
     # Stop message
     self.cmd_vel_pub.publish(Twist())
     rospy.sleep(1)

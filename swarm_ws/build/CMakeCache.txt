@@ -375,6 +375,12 @@ gtest_force_shared_crt:BOOL=OFF
 gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
 
 //Value Computed by CMake
+jarvis_controller_BINARY_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/build/jarvis_controller
+
+//Value Computed by CMake
+jarvis_controller_SOURCE_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/src/jarvis_controller
+
+//Value Computed by CMake
 jarvis_state_updater_BINARY_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/build/jarvis_state_updater
 
 //Value Computed by CMake
@@ -385,6 +391,9 @@ lib:FILEPATH=/opt/ros/kinetic/lib/libtf2.so
 
 //Value Computed by CMake
 mecanumdrive_controller_BINARY_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/build/mecanumdrive_controller
+
+//The directory containing a CMake configuration file for mecanumdrive_controller.
+mecanumdrive_controller_DIR:PATH=/home/vivek/Desktop/swarm/swarm_ws/devel/share/mecanumdrive_controller/cmake
 
 //Value Computed by CMake
 mecanumdrive_controller_SOURCE_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/src/mecanumdrive_controller
@@ -409,6 +418,9 @@ nav_msgs_DIR:PATH=/opt/ros/kinetic/share/nav_msgs/cmake
 
 //Value Computed by CMake
 omnidrive_odometry_BINARY_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/build/omnidrive_odometry
+
+//The directory containing a CMake configuration file for omnidrive_odometry.
+omnidrive_odometry_DIR:PATH=/home/vivek/Desktop/swarm/swarm_ws/devel/share/omnidrive_odometry/cmake
 
 //Value Computed by CMake
 omnidrive_odometry_SOURCE_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/src/omnidrive_odometry

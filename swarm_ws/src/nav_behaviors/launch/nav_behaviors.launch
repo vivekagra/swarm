@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <node pkg="diffdrive_odom" type="diffdrive_odom.py" name="diffdrive_odom" output="screen">
+  <node pkg="omnidrive_odometry" type="omnidrive_odom.py" name="omnidrive_odom" output="screen">
     <param name="rate" value="20" />
     <param name="robot_wheel_center_horizontal_distance" value="0.125" />
     <param name="robot_wheel_center_vertical_distance" value="0.075" />

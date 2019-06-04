@@ -1,2 +1,2 @@
-arduino:diffdrive_odom:gopigo_controller:gopigo_description:gopigo_state_updater:jarvis_state_updater:mecanumdrive_controller:nav_behaviors:omnidrive_odometry
+arduino:gopigo_controller:gopigo_description:gopigo_state_updater:jarvis_controller:jarvis_state_updater:mecanumdrive_controller:nav_behaviors:omnidrive_odometry
 -DCATKIN_DEVEL_PREFIX=/home/vivek/Desktop/swarm/swarm_ws/devel -DCMAKE_INSTALL_PREFIX=/home/vivek/Desktop/swarm/swarm_ws/install -G Unix Makefiles

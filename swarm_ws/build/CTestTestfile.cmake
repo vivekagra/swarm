@@ -6,11 +6,11 @@
 # testing this directory and lists subdirectories to be tested as well.
 subdirs(gtest)
 subdirs(gopigo_description)
-subdirs(diffdrive_odom)
 subdirs(gopigo_controller)
 subdirs(gopigo_state_updater)
+subdirs(jarvis_controller)
 subdirs(jarvis_state_updater)
 subdirs(mecanumdrive_controller)
-subdirs(nav_behaviors)
 subdirs(arduino)
 subdirs(omnidrive_odometry)
+subdirs(nav_behaviors)
