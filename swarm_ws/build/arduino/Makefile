@@ -79,28 +79,6 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: install/local
-
-.PHONY : install/local/fast
-
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -121,6 +99,28 @@ install/strip: preinstall
 install/strip/fast: install/strip
 
 .PHONY : install/strip/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: install/local
+
+.PHONY : install/local/fast
+
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
@@ -166,154 +166,79 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-arduino/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
-.PHONY : arduino/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
+arduino/CMakeFiles/rosserial_arduino_generate_messages_nodejs.dir/rule:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/rosserial_arduino_generate_messages_nodejs.dir/rule
+.PHONY : arduino/CMakeFiles/rosserial_arduino_generate_messages_nodejs.dir/rule
 
 # Convenience name for target.
-geometry_msgs_generate_messages_nodejs: arduino/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
+rosserial_arduino_generate_messages_nodejs: arduino/CMakeFiles/rosserial_arduino_generate_messages_nodejs.dir/rule
 
-.PHONY : geometry_msgs_generate_messages_nodejs
+.PHONY : rosserial_arduino_generate_messages_nodejs
 
 # fast build rule for target.
-geometry_msgs_generate_messages_nodejs/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make arduino/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
-.PHONY : geometry_msgs_generate_messages_nodejs/fast
+rosserial_arduino_generate_messages_nodejs/fast:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/rosserial_arduino_generate_messages_nodejs.dir/build.make arduino/CMakeFiles/rosserial_arduino_generate_messages_nodejs.dir/build
+.PHONY : rosserial_arduino_generate_messages_nodejs/fast
 
 # Convenience name for target.
-arduino/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-.PHONY : arduino/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
+arduino/CMakeFiles/rosserial_arduino_generate_messages_cpp.dir/rule:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/rosserial_arduino_generate_messages_cpp.dir/rule
+.PHONY : arduino/CMakeFiles/rosserial_arduino_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_nodejs: arduino/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
+rosserial_arduino_generate_messages_cpp: arduino/CMakeFiles/rosserial_arduino_generate_messages_cpp.dir/rule
 
-.PHONY : std_msgs_generate_messages_nodejs
+.PHONY : rosserial_arduino_generate_messages_cpp
 
 # fast build rule for target.
-std_msgs_generate_messages_nodejs/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make arduino/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
-.PHONY : std_msgs_generate_messages_nodejs/fast
+rosserial_arduino_generate_messages_cpp/fast:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/rosserial_arduino_generate_messages_cpp.dir/build.make arduino/CMakeFiles/rosserial_arduino_generate_messages_cpp.dir/build
+.PHONY : rosserial_arduino_generate_messages_cpp/fast
 
 # Convenience name for target.
-arduino/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
-.PHONY : arduino/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+arduino/CMakeFiles/rosserial_arduino_generate_messages_lisp.dir/rule:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/rosserial_arduino_generate_messages_lisp.dir/rule
+.PHONY : arduino/CMakeFiles/rosserial_arduino_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-geometry_msgs_generate_messages_lisp: arduino/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+rosserial_arduino_generate_messages_lisp: arduino/CMakeFiles/rosserial_arduino_generate_messages_lisp.dir/rule
 
-.PHONY : geometry_msgs_generate_messages_lisp
+.PHONY : rosserial_arduino_generate_messages_lisp
 
 # fast build rule for target.
-geometry_msgs_generate_messages_lisp/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make arduino/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
-.PHONY : geometry_msgs_generate_messages_lisp/fast
+rosserial_arduino_generate_messages_lisp/fast:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/rosserial_arduino_generate_messages_lisp.dir/build.make arduino/CMakeFiles/rosserial_arduino_generate_messages_lisp.dir/build
+.PHONY : rosserial_arduino_generate_messages_lisp/fast
 
 # Convenience name for target.
-arduino/CMakeFiles/std_msgs_generate_messages_py.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-.PHONY : arduino/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+arduino/CMakeFiles/rosserial_arduino_generate_messages_py.dir/rule:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/rosserial_arduino_generate_messages_py.dir/rule
+.PHONY : arduino/CMakeFiles/rosserial_arduino_generate_messages_py.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_py: arduino/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+rosserial_arduino_generate_messages_py: arduino/CMakeFiles/rosserial_arduino_generate_messages_py.dir/rule
 
-.PHONY : std_msgs_generate_messages_py
+.PHONY : rosserial_arduino_generate_messages_py
 
 # fast build rule for target.
-std_msgs_generate_messages_py/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/std_msgs_generate_messages_py.dir/build.make arduino/CMakeFiles/std_msgs_generate_messages_py.dir/build
-.PHONY : std_msgs_generate_messages_py/fast
+rosserial_arduino_generate_messages_py/fast:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/rosserial_arduino_generate_messages_py.dir/build.make arduino/CMakeFiles/rosserial_arduino_generate_messages_py.dir/build
+.PHONY : rosserial_arduino_generate_messages_py/fast
 
 # Convenience name for target.
-arduino/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
-.PHONY : arduino/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
+arduino/CMakeFiles/rosserial_arduino_generate_messages_eus.dir/rule:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/rosserial_arduino_generate_messages_eus.dir/rule
+.PHONY : arduino/CMakeFiles/rosserial_arduino_generate_messages_eus.dir/rule
 
 # Convenience name for target.
-geometry_msgs_generate_messages_eus: arduino/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
+rosserial_arduino_generate_messages_eus: arduino/CMakeFiles/rosserial_arduino_generate_messages_eus.dir/rule
 
-.PHONY : geometry_msgs_generate_messages_eus
+.PHONY : rosserial_arduino_generate_messages_eus
 
 # fast build rule for target.
-geometry_msgs_generate_messages_eus/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make arduino/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
-.PHONY : geometry_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-arduino/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-.PHONY : arduino/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_cpp: arduino/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_cpp
-
-# fast build rule for target.
-geometry_msgs_generate_messages_cpp/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make arduino/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
-.PHONY : geometry_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-arduino/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-.PHONY : arduino/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_cpp: arduino/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : std_msgs_generate_messages_cpp
-
-# fast build rule for target.
-std_msgs_generate_messages_cpp/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make arduino/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
-.PHONY : std_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-arduino/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
-.PHONY : arduino/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_py: arduino/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_py
-
-# fast build rule for target.
-geometry_msgs_generate_messages_py/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make arduino/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
-.PHONY : geometry_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-arduino/CMakeFiles/std_msgs_generate_messages_eus.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-.PHONY : arduino/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_eus: arduino/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-.PHONY : std_msgs_generate_messages_eus
-
-# fast build rule for target.
-std_msgs_generate_messages_eus/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make arduino/CMakeFiles/std_msgs_generate_messages_eus.dir/build
-.PHONY : std_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-arduino/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f CMakeFiles/Makefile2 arduino/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-.PHONY : arduino/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_lisp: arduino/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : std_msgs_generate_messages_lisp
-
-# fast build rule for target.
-std_msgs_generate_messages_lisp/fast:
-	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make arduino/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
-.PHONY : std_msgs_generate_messages_lisp/fast
+rosserial_arduino_generate_messages_eus/fast:
+	cd /home/vivek/Desktop/swarm/swarm_ws/build && $(MAKE) -f arduino/CMakeFiles/rosserial_arduino_generate_messages_eus.dir/build.make arduino/CMakeFiles/rosserial_arduino_generate_messages_eus.dir/build
+.PHONY : rosserial_arduino_generate_messages_eus/fast
 
 # Help Target
 help:
@@ -322,22 +247,17 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install"
+	@echo "... rosserial_arduino_generate_messages_nodejs"
+	@echo "... rosserial_arduino_generate_messages_cpp"
 	@echo "... edit_cache"
-	@echo "... test"
-	@echo "... install/local"
+	@echo "... rosserial_arduino_generate_messages_lisp"
+	@echo "... rosserial_arduino_generate_messages_py"
 	@echo "... list_install_components"
 	@echo "... install/strip"
-	@echo "... geometry_msgs_generate_messages_nodejs"
-	@echo "... std_msgs_generate_messages_nodejs"
+	@echo "... install/local"
+	@echo "... rosserial_arduino_generate_messages_eus"
+	@echo "... test"
 	@echo "... rebuild_cache"
-	@echo "... geometry_msgs_generate_messages_lisp"
-	@echo "... std_msgs_generate_messages_py"
-	@echo "... geometry_msgs_generate_messages_eus"
-	@echo "... geometry_msgs_generate_messages_cpp"
-	@echo "... std_msgs_generate_messages_cpp"
-	@echo "... geometry_msgs_generate_messages_py"
-	@echo "... std_msgs_generate_messages_eus"
-	@echo "... std_msgs_generate_messages_lisp"
 .PHONY : help
 
 

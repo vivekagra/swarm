@@ -1,12 +1,16 @@
+#include <ros.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <Encoder.h>
-
 #include <LiquidCrystal.h>
-
 #include <Keyboard.h>
-
 #include <string.h>
 
-Encoder myEnc(6, 7);
+ros::NodeHandle nh;
+std_msgs::Float64MultiArray msg;
+
+ros::Publisher encoder("encoder", &msg);
+
+Encoder myEnc_fl(8, 9);
 // pin settings
 int pwm_fl = 2;
 int pwm_bl = 3;
@@ -24,8 +28,11 @@ int INb_br = 29;
 
 
 void setup() {
-    Serial.begin(230400);
-
+    Serial.begin(57600);
+    nh.initNode();
+    nh.advertise(encoder);
+    msg.data = (float *)malloc(sizeof(float)*2);
+    msg.data_length = 2;
     // set pins to output
     pinMode(pwm_fl, OUTPUT);
     pinMode(pwm_bl, OUTPUT);
@@ -53,6 +60,7 @@ void setup() {
 // function to control motor
 // speed is how fast the motor rotates
 // Please set pwmPin, InaPin and INbPin for the motor you want to drive
+
 void control_motor(int speed, int pwmPin, int INaPin, int INbPin){
     if(speed > 0){
         analogWrite(pwmPin, speed);
@@ -72,6 +80,8 @@ void control_motor(int speed, int pwmPin, int INaPin, int INbPin){
 
 // In time loop, receive from serial and control 4 motors
 // 280 count per revolutin is encoder precision
+long oldPosition  = myEnc_fl.read();
+long x = oldPosition;
 void loop() {
     int i = 0;
 
@@ -79,62 +89,26 @@ void loop() {
     for(i=0;i<256;i++)
     {
       // control motors
-      control_motor(i, pwm_fl, INa_fl, INb_fl);
-      control_motor(i, pwm_bl, INa_bl, INb_bl);
-      control_motor(i, pwm_fr, INa_fr, INb_fr);
-      control_motor(i, pwm_br, INa_br, INb_br);
-    
-      long oldPosition  = myEnc.read();
-      Serial.print(oldPosition);
-      delay(1000);
-      long newPosition = myEnc.read();
-      Serial.println(newPosition);
-      float rpm_fl = ((newPosition -  oldPosition)*60)/float(280);
-      //Serial.print("Forward_left : ");Serial.print(i); Serial.print(" : ");Serial.println(rpm_fl);
-    }
-    for(i=255;i>=0;i--)
-    {
-      // control motors
-      control_motor(i, pwm_fl, INa_fl, INb_fl);
-      control_motor(i, pwm_bl, INa_bl, INb_bl);
-      control_motor(i, pwm_fr, INa_fr, INb_fr);
-      control_motor(i, pwm_br, INa_br, INb_br);
-      
-      long oldPosition  = -999;
-      oldPosition = myEnc.read();
-      delay(1000);
-      long newPosition = myEnc.read();
-      float rpm_fl = ((newPosition -  oldPosition)*60)/float(280);
-      Serial.print("Forward_left : ");Serial.print(i); Serial.print(" : ");Serial.println(rpm_fl);
-    }
-    for(i=0;i>=-255;i--)
-    {
-      // control motors
-      control_motor(i, pwm_fl, INa_fl, INb_fl);
-      control_motor(i, pwm_bl, INa_bl, INb_bl);
-      control_motor(i, pwm_fr, INa_fr, INb_fr);
-      control_motor(i, pwm_br, INa_br, INb_br);
-      
-      long oldPosition  = myEnc.read();
-      delay(1000);
-      long newPosition = myEnc.read();
-      float rpm_fl = ((newPosition -  oldPosition)*60)/float(280);
-      Serial.print("Forward_left : ");Serial.print(i); Serial.print(" : ");Serial.println(rpm_fl);
-      
-    }
-    for(i=-255;i<=0;i++)
-    {
-      // control motors
-      control_motor(i, pwm_fl, INa_fl, INb_fl);
-      control_motor(i, pwm_bl, INa_bl, INb_bl);
-      control_motor(i, pwm_fr, INa_fr, INb_fr);
-      control_motor(i, pwm_br, INa_br, INb_br);
-      
-      long oldPosition  = myEnc.read();
-      delay(1000);
-      long newPosition = myEnc.read();
-      float rpm_fl = ((newPosition -  oldPosition)*60)/float(280);
-      Serial.print("Forward_left : ");Serial.print(i); Serial.print(" : ");Serial.println(rpm_fl);
-    }
+      control_motor(100, pwm_fl, INa_fl, INb_fl);
+      control_motor(0, pwm_bl, INa_bl, INb_bl);
+      control_motor(0, pwm_fr, INa_fr, INb_fr);
+      control_motor(0, pwm_br, INa_br, INb_br);
 
+      int t0 = millis();
+      int t1 = millis();
+      long newPosition = myEnc_fl.read();
+      x = newPosition;
+      while(t1-t0<1000)
+      {
+        if(oldPosition!=newPosition)
+        {
+          oldPosition = newPosition;
+        }
+        t1 = millis();  
+      }
+      float rpm = ((newPosition -  x)*60)/float(280);
+      msg.data[0] = 100;
+      msg.data[1] = rpm;
+      encoder.publish( &msg );  
+    }
 }
