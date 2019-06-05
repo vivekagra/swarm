@@ -1,0 +1,8 @@
+prefix=/home/vivek/Desktop/swarm/swarm_ws/install
+
+Name: jarvis_teleop
+Description: Description of jarvis_teleop
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/vivek/Desktop/swarm/swarm_ws/install/lib 
+Requires: 
