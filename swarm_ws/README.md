@@ -1,6 +1,3 @@
-# gopigo_ws
+# Swarm_ws
 
-Using ROS with a GoPiGo differential drive robot
-
-For more information on running the code:
-http://www.moorerobots.com
+Using ROS with a Mecanum drive robot
