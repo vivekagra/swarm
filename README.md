@@ -4,133 +4,123 @@ This Repository will contain all cad models, reading material, scripts and code 
 
 
 
-# jarvis_controller
+## jarvis_controller
 
 Reads the target w velocity for each wheels and convert them to a pwm signal and send it to arduino.
 Also reads angular velocity of each wheel and apply pid on it and modify the signal to reduce the error
 
-Parameters - 
-	i.    kp            = 1
-	ii.   ki    		= 1
-	iii.  kd    		= 1
-	iv.   rate  		= 50
-	v.    motor_max_w   = 62.8319
-	vi.   motor_min_w   = 31.4159
-	vii.  motor_cmd_max = 255
-	viii. motor_cmd_min = 100
-	ix.   pid_on        = False
-	x.    controller_on = False
+### Parameters - 
+ 1.  kp            = 1 
+ 2.  ki    	  = 1
+ 3.  kd    	  = 1
+ 4.  rate  	  = 50
+ 5.  motor_max_w   = 62.8319
+ 6.  motor_min_w   = 31.4159
+ 7.  motor_cmd_max = 255
+ 8.  motor_cmd_min = 100
+ 9.  pid_on        = False
+ 10. controller_on = False
 
-Published topics - 
-	i.	 front_lwheel_w_control 
-	ii.	 front_rwheel_w_control 
-	iii. rear_lwheel_w_control
-	iv.	 rear_rwheel_w_control
-	v.	 front_lwheel_w_motor
-	vi.	 front_rwheel_w_motor
-	vii. rear_lwheel_w_motor
-	viii.rear_rwheel_w_motor
+### Published topics - 
+ 1.  front_lwheel_w_control 
+ 2.  front_rwheel_w_control 
+ 3.  rear_lwheel_w_control
+ 4.  rear_rwheel_w_control
+ 5.  front_lwheel_w_motor
+ 6.  front_rwheel_w_motor
+ 7.  rear_lwheel_w_motor
+ 8.  rear_rwheel_w_motor
 
-Subsribing topics - 
-	i.	 front_lwheel_w_enc
-	ii.	 front_rwheel_w_enc
-	iii. rear_lwheel_w_enc
-	iv.	 rear_rwheel_w_enc
-	v.	 front_lwheel_w_target
-	vi.	 front_rwheel_w_target
-	vii. rear_lwheel_w_target
-	viii.rear_rwheel_w_target
+### Subsribing topics - 
+ 1.  front_lwheel_w_enc
+ 2.  front_rwheel_w_enc
+ 3.  rear_lwheel_w_enc
+ 4.  rear_rwheel_w_enc
+ 5.  front_lwheel_w_target
+ 6.  front_rwheel_w_target
+ 7.  rear_lwheel_w_target
+ 8.  rear_rwheel_w_target
 
-Work Pending - 
-	i.  vel to cmd is assumed linear change it after finding appropriate relation
-	ii. Check pid integral
+### Work Pending - 
+ 1.  vel to cmd is assumed linear change it after finding appropriate relation
+ 2.  Check pid integral
 
 
 
-# jarvis_teleop
+## jarvis_teleop
 
 Command velocity and direction to bot to move in a desired direction
 
-Parameters - 
-	i.	speed = 0.5
-	ii. turn  = 1.0
+### Parameters - 
+ 1.  speed = 0.5
+ 2.  turn  = 1.0
 
-Published topics - 
-	i.	cmd_vel
+### Published topics - 
+ 1.  cmd_vel
 
 
 
-# mecanum_drive_controller
+## mecanum_drive_controller
 
 This package take target velocities in x y z diretion and convert them to angular velociy of individual wheels
 
-Parameters - 
-	i.	H    		 = 0.5
-	ii. V    		 = 1.0
-	iii.R    		 = 0.03
-	iv. rate 		 = 50
-	v.  timeout_idle = 2
+### Parameters - 
+	1.  H		= 0.5
+	2.  V    	= 1.0
+	3.  R    	= 0.03
+	4.  rate 	= 50
+	5.  timeout_idle = 2
 
-Published topics - 
-	i.	 front_lwheel_w_target 
-	ii.	 front_rwheel_w_target 
-	iii. rear_lwheel_w_target
-	iv.	 rear_rwheel_w_target
+### Published topics - 
+	1.  front_lwheel_w_target 
+	2.  front_rwheel_w_target 
+	3.  rear_lwheel_w_target
+	4.  rear_rwheel_w_target
 
-Subsribing topics - 
-	i.	 cmd_vel
+### Subsribing topics - 
+	1.  cmd_vel
 
 
 # omnidrive_odometry
 
 This package try to localize the robot based on odometry data
 
-Parameters - 
-	i.    H              = 0.125
-	ii.   V    			 = 0.075
-	iii.  R    			 = 0.03
-	iv.   rate  		 = 50
-	v.    N   			 = 280
-	vi.   frame_id   	 = /odom
-	vii.  child_frame_id = /base_link
+### Parameters - 
+	1.  H              = 0.125
+	2.  V    	     = 0.075
+	3.  R    	     = 0.03
+	4.  rate  	     = 50
+	5.  N   	     = 280
+	6.  frame_id       = /odom
+	7.  child_frame_id = /base_link
 
-Published topics - 
-	i.	 cmd_vel_enc 
-	ii.	 odom 
+### Published topics - 
+	1.  cmd_vel_enc 
+	2.  odom 
 
-Subsribing topics - 
-	i.	 front_lwheel_w_enc
-	ii.	 front_rwheel_w_enc
-	iii. rear_lwheel_w_enc
-	iv.	 rear_rwheel_w_enc
+### Subsribing topics - 
+	1.  front_lwheel_w_enc
+	2.  front_rwheel_w_enc
+	3.  rear_lwheel_w_enc
+	4.  rear_rwheel_w_enc
 
-Pending Work -
+### Pending Work -
 	Compute the odomtery
 
 
-# arduino
+## arduino
 
-Parameters - 
-	i.    kp            = 1
-	ii.   ki    		= 1
-	iii.  kd    		= 1
-	iv.   rate  		= 50
-	v.    motor_max_w   = 62.8319
-	vi.   motor_min_w   = 31.4159
-	vii.  motor_cmd_max = 255
-	viii. motor_cmd_min = 100
-	ix.   pid_on        = False
-	x.    controller_on = False
+### Parameters - 
 
-Published topics - 
-	i.	 front_lwheel_w_enc
-	ii.	 front_rwheel_w_enc
-	iii. rear_lwheel_w_enc
-	iv.	 rear_rwheel_w_enc
+### Published topics - 
+	1. front_lwheel_w_enc
+	2. front_rwheel_w_enc
+	3. rear_lwheel_w_enc
+	4. rear_rwheel_w_enc
 
 
-Subsribing topics - 
-	i.	 front_lwheel_w_motor
-	ii.	 front_rwheel_w_motor
-	iii. rear_lwheel_w_motor
-	iv.  rear_rwheel_w_motor
+### Subsribing topics - 
+	1. front_lwheel_w_motor
+	2. front_rwheel_w_motor
+	3. rear_lwheel_w_motor
+	4. rear_rwheel_w_motor
