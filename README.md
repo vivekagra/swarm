@@ -2,7 +2,29 @@
 
 This Repository will contain all cad models, reading material, scripts and code that are used in making swarm squad
 
+## jarvis_state_updater
 
+### Parameters - 
+	1. rate          = 10
+	2. err_tick_incr = 20
+	3. jarvis_on     = True
+	4. R		 = 0.03
+
+### Published topics - 
+	1.  front_lwheel_w_enc
+	2.  front_rwheel_w_enc
+	3.  rear_lwheel_w_enc
+	4.  rear_rwheel_w_enc
+	
+### Subscribed topics - 
+	1.  front_lwheel_w_control 
+	2.  front_rwheel_w_control 
+	3.  rear_lwheel_w_control
+	4.  rear_rwheel_w_control
+	5.  front_lwheel_w_motor
+	6.  front_rwheel_w_motor
+	7.  rear_lwheel_w_motor
+	8.  rear_rwheel_w_motor
 
 ## jarvis_controller
 
