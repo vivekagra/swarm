@@ -120,7 +120,7 @@ void encoder()
 	t0 = millis();
 	t1 = millis();
 	
-	while(t1-t0<1000)
+	while(t1-t0<50)
 	{
 		newPos_fl = myEnc_fl.read();
 		newPos_fr = myEnc_fr.read();
@@ -129,10 +129,10 @@ void encoder()
 		t1 = millis();
 	}
 
-	rpm_fl = (float(newPos_fl-oldPos_fl))*60/280;
-	rpm_fr = (float(newPos_fr-oldPos_fr))*60/280;
-	rpm_rl = (float(newPos_rl-oldPos_rl))*60/280;
-	rpm_rr = (float(newPos_rr-oldPos_rr))*60/280;
+	rpm_fl = (float(newPos_fl-oldPos_fl))*1200/280;
+	rpm_fr = (float(newPos_fr-oldPos_fr))*1200/280;
+	rpm_rl = (float(newPos_rl-oldPos_rl))*1200/280;
+	rpm_rr = (float(newPos_rr-oldPos_rr))*1200/280;
 
 }
 void setup()

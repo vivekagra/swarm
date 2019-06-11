@@ -10,7 +10,7 @@ from std_msgs.msg import Int16
 # Use a PID that compares the error based on encoder readings
 class ControlsToMotors:
   def __init__(self):
-    rospy.init_node('jarvis_controller')
+    rospy.init_node('jarvis_controller')	
     self.rate = rospy.get_param('~rate', 50)
     
     # set pid constants
@@ -30,10 +30,11 @@ class ControlsToMotors:
     self.motor_cmd_max = rospy.get_param('~motor_cmd_max',255)
     self.motor_cmd_min = rospy.get_param('~motor_cmd_min',100)
 
-    self.pid_on = rospy.get_param('~pid_on',True)
+    self.pid_on = rospy.get_param('~pid_on',False)
     self.controller_on = rospy.get_param('~jarvis_on',False)
     
     if self.controller_on:
+		print("Controller_on")
  
     # Publish the computed w velocity after applying pid on  it
     self.front_lwheel_w_control_pub = rospy.Publisher('front_lwheel_w_control', Float32, queue_size=10)
@@ -108,16 +109,7 @@ class ControlsToMotors:
   def rear_rwheel_w_enc_callback(self, msg):
     self.rear_rwheel_w_enc = msg.data
 
-  
-
-
-
-
-  ################# I am changing user defined integral #########################
-  
-
-
-
+    
 
   # PID control
   def pid_control(self,wheel_pid,target,state):
@@ -132,7 +124,7 @@ class ControlsToMotors:
     if wheel_pid['dt'] == 0: return 0
 
     wheel_pid['error_curr'] = target - state
-    wheel_pid['integral'] = wheel_pid['integral'] + (wheel_pid['error_curr']*wheel_pid['dt'])
+    wheel_pid['integral'] = wheel_pid['integral'][1:] + [(wheel_pid['error_curr']*wheel_pid['dt'])]
     wheel_pid['derivative'] = (wheel_pid['error_curr'] - wheel_pid['error_prev'])/wheel_pid['dt']
 
     wheel_pid['error_prev'] = wheel_pid['error_curr']
