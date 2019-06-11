@@ -16,12 +16,11 @@ Encoder myEnc_fr(8, 9);
 Encoder myEnc_rl(10, 11);
 Encoder myEnc_rr(12, 13);
 
-
 // pin settings
-int pwm_fl = 2;
-int pwm_bl = 3;
-int pwm_fr = 4;
-int pwm_br = 5;
+int pwmPin_fl = 2;
+int pwmPin_bl = 3;
+int pwmPin_fr = 4;
+int pwmPin_br = 5;
 
 int ENa_fl = 22;
 int ENb_fl = 23;
@@ -33,19 +32,15 @@ int ENa_br = 28;
 int ENb_br = 29;
 
 
-// take initial enocder readings
-long long oldPos_fl = myEnc_fl.read();
-long long newPos_fl = myEnc_fl.read();
+float rpm_fl = 0;
+float rpm_fr = 0;
+float rpm_rl = 0;
+float rpm_rr = 0;
 
-long long oldPos_fr = myEnc_fr.read();
-long long newPos_fr = myEnc_fr.read();
-
-long long oldPos_rl = myEnc_rl.read();
-long long newPos_rl = myEnc_rl.read();
-
-long long oldPos_rr = myEnc_rr.read();
-long long newPos_rr = myEnc_rr.read();
-
+int pwm_fl = 0;
+int pwm_fr = 0;
+int pwm_rl = 0;
+int pwm_rr = 0;
 
 // function to run a motor
 void controlMotor(int pwmSignal,int pwmPin,int ENa,int ENb)
@@ -67,22 +62,26 @@ void controlMotor(int pwmSignal,int pwmPin,int ENa,int ENb)
 
 void front_lwheel_cb(const std_msgs::Int16& pwm)
 {
-	controlMotor(pwm.data,pwm_fl,Ena_fl,Enb_fl);
+	controlMotor(pwm.data,pwmPin_fl,Ena_fl,Enb_fl);
+	pwm_fl = pwm.data;
 }
 
 void front_rwheel_cb(const std_msgs::Int16& pwm)
 {
-	controlMotor(pwm.data,pwm_fr,Ena_fr,Enb_fr);
+	controlMotor(pwm.data,pwmPin_fr,Ena_fr,Enb_fr);
+	pwm_fl = pwm.data;
 }
 
 void front_lwheel_cb(const std_msgs::Int16& pwm)
 {
-	controlMotor(pwm.data,pwm_rl,Ena_rl,Enb_rl);
+	controlMotor(pwm.data,pwmPin_rl,Ena_rl,Enb_rl);
+	pwm_fl = pwm.data;
 }
 
 void front_lwheel_cb(const std_msgs::Int16& pwm)
 {
-	controlMotor(pwm.data,pwm_rr,Ena_rr,Enb_rr);
+	controlMotor(pwm.data,pwmPin_rr,Ena_rr,Enb_rr);
+	pwm_fl = pwm.data;
 }
 
 
@@ -103,7 +102,39 @@ ros::Publisher encoder_fr("encoder_fr", &fr_msg);
 ros::Publisher encoder_rl("encoder_rl", &rl_msg);
 ros::Publisher encoder_rr("encoder_rr", &rr_msg);
 
+void encoder()
+{
+	// encoder initial readings
+	long long oldPos_fl = myEnc_fl.read();
+	long long newPos_fl = myEnc_fl.read();
 
+	long long oldPos_fr = myEnc_fr.read();
+	long long newPos_fr = myEnc_fr.read();
+
+	long long oldPos_rl = myEnc_rl.read();
+	long long newPos_rl = myEnc_rl.read();
+
+	long long oldPos_rr = myEnc_rr.read();
+	long long newPos_rr = myEnc_rr.read();
+	
+	t0 = millis();
+	t1 = millis();
+	
+	while(t1-t0<1000)
+	{
+		newPos_fl = myEnc_fl.read();
+		newPos_fr = myEnc_fr.read();
+		newPos_rl = myEnc_rl.read();
+		newPos_rr = myEnc_rr.read();
+		t1 = millis();
+	}
+
+	rpm_fl = (float(newPos_fl-oldPos_fl))*60/280;
+	rpm_fr = (float(newPos_fr-oldPos_fr))*60/280;
+	rpm_rl = (float(newPos_rl-oldPos_rl))*60/280;
+	rpm_rr = (float(newPos_rr-oldPos_rr))*60/280;
+
+}
 void setup()
 {
 	Serial.begin(57600);
@@ -147,7 +178,22 @@ void setup()
 
 
 void loop()
-{  
-	nh.spinOnce();
-	delay(1);	
+{   
+	encoder();
+	
+	fl_msg.data[0] = pwm_fl;
+	fr_msg.data[0] = pwm_fr;
+	rl_msg.data[0] = pwm_rl;
+	rr_msg.data[0] = pwm_rr;
+
+	fl_msg.data[1] = rpm_fl;
+	fr_msg.data[1] = rpm_fr;
+	rl_msg.data[1] = rpm_rl;
+	rr_msg.data[1] = rpm_rr;
+
+	encoder_fl.publish(&fl_msg);
+	encoder_fr.publish(&fr_msg);
+	encoder_rl.publish(&rl_msg);
+	encoder_rr.publish(&rr_msg);
+	nh.spinOnce();	
 }
