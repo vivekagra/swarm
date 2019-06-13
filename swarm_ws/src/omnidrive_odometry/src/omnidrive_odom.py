@@ -80,7 +80,16 @@ class OdomPublisher:
     time_curr_update = rospy.Time.now()
     dt = (time_curr_update - self.time_prev_update).to_sec()
     self.time_prev_update = time_curr_update
-    
+    del_x_r  = 0.25*dt*(-front_rwheel_tangent_vel_enc + front_lwheel_tangent_vel_enc - rear_lwheel_tangent_vel_enc + rear_rwheel_tangent_vel_enc)
+    del_y_r  = 0.25*dt*(+front_rwheel_tangent_vel_enc + front_lwheel_tangent_vel_enc + rear_lwheel_tangent_vel_enc + rear_rwheel_tangent_vel_enc)
+    del_th_r = 0.25*dt*(+front_rwheel_tangent_vel_enc - front_lwheel_tangent_vel_enc - rear_lwheel_tangent_vel_enc + rear_rwheel_tangent_vel_enc)/(self.H+self.V)
+    del_x    = del_x_r*np.cos(th) + del_y_r*np.sin(th)
+    del_y    = del_x_r*np.sin(th) + del_y_r*np.cos(th)
+    del_th   = del_th_r
+    x        = x  + del_x
+    y        = y  + del_y
+    th       = th + del_th
+
     #+++++++++++++++++++++-------------------------- update odometry data here ------------------------+++++++++++++++++++++#
     return {'x':x, 'y':y, 'th':th,'vx':vx,'vy':vy,'w':w}
 
@@ -92,10 +101,10 @@ class OdomPublisher:
     rear_lwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.rear_lwheel_w_enc)
     rear_rwheel_tangent_vel_enc = self.angularvel_2_tangentvel(self.rear_rwheel_w_enc)
 
-    self.front_lwheel_tangent_vel_enc_pub.publish(front_lwheel_tangent_vel_enc)
-    self.front_rwheel_tangent_vel_enc_pub.publish(front_rwheel_tangent_vel_enc)
-    self.rear_lwheel_tangent_vel_enc_pub.publish(rear_lwheel_tangent_vel_enc)
-    self.rear_rwheel_tangent_vel_enc_pub.publish(rear_rwheel_tangent_vel_enc)
+    # self.front_lwheel_tangent_vel_enc_pub.publish(front_lwheel_tangent_vel_enc)
+    # self.front_rwheel_tangent_vel_enc_pub.publish(front_rwheel_tangent_vel_enc)
+    # self.rear_lwheel_tangent_vel_enc_pub.publish(rear_lwheel_tangent_vel_enc)
+    # self.rear_rwheel_tangent_vel_enc_pub.publish(rear_rwheel_tangent_vel_enc)
 
     pose_next = self.pose_next(front_lwheel_tangent_vel_enc, front_rwheel_tangent_vel_enc, rear_lwheel_tangent_vel_enc, rear_rwheel_tangent_vel_enc)
 

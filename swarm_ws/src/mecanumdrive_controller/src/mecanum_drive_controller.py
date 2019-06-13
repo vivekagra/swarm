@@ -56,10 +56,10 @@ class CmdVelToOmniDriveMotors:
     rospy.sleep(1)    
 
   def update(self):
-    w_fr = (1/self.R)*(self.target_vx + self.target_vy - (self.H + self.V)*self.target_w)
-    w_fl = (1/self.R)*(self.target_vx - self.target_vy + (self.H + self.V)*self.target_w)
-    w_rr = (1/self.R)*(self.target_vx + self.target_vy + (self.H + self.V)*self.target_w)
-    w_rl = (1/self.R)*(self.target_vx - self.target_vy - (self.H + self.V)*self.target_w)
+    w_fr = (1/self.R)*(self.target_vy - self.target_vx + (self.H + self.V)*self.target_w)
+    w_fl = (1/self.R)*(self.target_vy + self.target_vx - (self.H + self.V)*self.target_w)
+    w_rr = (1/self.R)*(self.target_vy - self.target_vx - (self.H + self.V)*self.target_w)
+    w_rl = (1/self.R)*(self.target_vy + self.target_vx + (self.H + self.V)*self.target_w)
     
     self.front_rwheel_w_target_pub.publish(w_fr)
     self.front_lwheel_w_target_pub.publish(w_fl)
