@@ -2,27 +2,20 @@
 <launch>
 
   <node pkg="jarvis_controller" type="jarvis_controller.py" name="jarvis_controller" output="screen">
-    <param name="rate" value="10" />
+    <param name="rate" value="50" />
     <param name="Kp" value="0.1" />
     <param name="Ki" value="0.05" />
     <param name="Kd" value="0.001" />
     <!-- Max angular vel computed by counting the number of encoder ticks over some time.
       rad/s = # ticks * rad/tick / dt
        -->
-    <param name="motor_max_angular_vel" value="5.32" />
-    <param name="motor_min_angular_vel" value="1.28" />
+    <param name="motor_max_angular_vel" value="62.8319" />
+    <param name="motor_min_angular_vel" value="31.4159" />
     <param name="motor_cmd_max" value="255" />
-    <param name="motor_cmd_min" value="110" />
+    <param name="motor_cmd_min" value="100" />
     <param name="robot_wheel_radius" value="0.03" />
-    <param name="pid_on" value="True" />
-    <param name="jarvis_on" value="True" />
-  </node>
-
-  <node pkg="jarvis_state_updater" type="jarvis_state_updater.py" name="jarvis_state_updater" output="screen">
-    <param name="rate" value="5" />
-    <param name="err_tick_incr" value="5" />
-    <param name="robot_wheel_radius" value="0.03" />
-    <param name="jarvis_on" value="True" />
+    <param name="pid_on" value="False" />
+    <param name="controller_on" value="False" />
   </node>
 
 </launch>

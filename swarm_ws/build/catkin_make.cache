@@ -1,2 +1,2 @@
-arduino:gopigo_description:jarvis_controller:jarvis_teleop:mecanumdrive_controller:nav_behaviors:omnidrive_odometry:teleop_twist_keyboard
+arduino:jarvis_controller:jarvis_description:jarvis_state_updater:jarvis_teleop:mecanumdrive_controller:nav_behaviors:omnidrive_odometry
 -DCATKIN_DEVEL_PREFIX=/home/vivek/Desktop/swarm/swarm_ws/devel -DCMAKE_INSTALL_PREFIX=/home/vivek/Desktop/swarm/swarm_ws/install -G Unix Makefiles

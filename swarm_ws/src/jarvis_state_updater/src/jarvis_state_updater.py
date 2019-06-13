@@ -35,7 +35,7 @@ class WheelEncoderPublisher:
 		self.rate = rospy.get_param('~rate', 10)
 		self.err_tick_incr = rospy.get_param('~err_tick_incr',20) # Filter out clearly erroneous encoder readings
 		self.time_prev_update = rospy.Time.now();
-		self.gopigo_on = rospy.get_param('~gopigo_on',True)
+		self.jarvis_on = rospy.get_param('~jarvis_on',True)
 		
 		if self.gopigo_on:
 			import gopigo   
@@ -91,8 +91,7 @@ class WheelEncoderPublisher:
 		return rads
 
 	def update(self):
-		if self.gopigo_on: # Running on actual robot
-			import gopigo
+		if self.jarvis_on: # Running on actual robot
 			front_lwheel_enc = self.front_lwheel_dir * gopigo.enc_read(1) * .01 # cm's moved
 			front_rwheel_enc = self.front_rwheel_dir * gopigo.enc_read(0) * .01 # cm's moved
 			rear_lwheel_enc = self.rear_lwheel_dir * gopigo.enc_read(1) * .01 # cm's moved

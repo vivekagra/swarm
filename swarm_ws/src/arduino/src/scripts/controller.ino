@@ -139,10 +139,10 @@ void setup()
 {
 	Serial.begin(57600);
 
-	pinMode(pwm_fl,OUTPUT);
-	pinMode(pwm_fl,OUTPUT);
-	pinMode(pwm_rl,OUTPUT);
-	pinMode(pwm_rr,OUTPUT);
+	pinMode(pwmPin_fl,OUTPUT);
+	pinMode(pwmPin_fl,OUTPUT);
+	pinMode(pwmPin_rl,OUTPUT);
+	pinMode(pwmPin_rr,OUTPUT);
 
 	pinMode(ENa_fl,OUTPUT);
 	pinMode(ENb_fl,OUTPUT);

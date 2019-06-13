@@ -381,6 +381,12 @@ jarvis_controller_BINARY_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/build/jar
 jarvis_controller_SOURCE_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/src/jarvis_controller
 
 //Value Computed by CMake
+jarvis_description_BINARY_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/build/jarvis_description
+
+//Value Computed by CMake
+jarvis_description_SOURCE_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/src/jarvis_description
+
+//Value Computed by CMake
 jarvis_state_updater_BINARY_DIR:STATIC=/home/vivek/Desktop/swarm/swarm_ws/build/jarvis_state_updater
 
 //Value Computed by CMake

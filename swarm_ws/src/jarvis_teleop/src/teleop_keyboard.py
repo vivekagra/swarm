@@ -88,8 +88,8 @@ if __name__=="__main__":
                 z = moveBindings[key][2]
                 th = moveBindings[key][3]
             elif key in speedBindings.keys():
-                speed = speed + speedBindings[key][0]
-                turn = turn + speedBindings[key][1]
+                speed = speed * speedBindings[key][0]
+                turn = turn * speedBindings[key][1]
 
                 print(vels(speed,turn))
                 if (status == 14):
