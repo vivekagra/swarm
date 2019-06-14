@@ -11,8 +11,8 @@ class NavTimed():
     self.cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
     self.time_start = rospy.Time.now()
     self.time_to_run = rospy.get_param('~time_to_run',10)
-    self.vx_target = rospy.get_param('~vx_target',0.1)
-    self.vy_target = rospy.get_param('~vy_target',0)
+    self.vx_target = rospy.get_param('~vx_target',0)
+    self.vy_target = rospy.get_param('~vy_target',0.1)
     self.w_target = rospy.get_param('~w_target',0)    
 
   def update(self):
