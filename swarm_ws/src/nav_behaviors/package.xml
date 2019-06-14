@@ -40,11 +40,15 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  
   <build_depend>mecanumdrive_controller</build_depend>
+  <build_depend>jarvis_controller</build_depend>
+  <build_depend>arduino</build_depend>
   <build_depend>omnidrive_odometry</build_depend>
   <run_depend>mecanumdrive_controller</run_depend>
+  <run_depend>jarvis_controller</run_depend>
+  <run_depend>arduino</run_depend>
   <run_depend>omnidrive_odometry</run_depend>
-
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
