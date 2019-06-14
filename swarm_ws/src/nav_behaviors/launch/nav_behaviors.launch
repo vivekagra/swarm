@@ -19,5 +19,10 @@
     <param name="robot_wheel_center_vertical_distance" value="0.075" />
     <param name="robot_wheel_radius" value="0.03" />
   </node>
+  
+  <node pkg="jarvis_controller" type="jarvis_controller.py" name="" output="screen">
+    <param name="" value="" />
+    <param name="" value="" />
+  </node>
 
 </launch>
