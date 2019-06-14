@@ -7,6 +7,8 @@ project(nav_behaviors)
 find_package(catkin REQUIRED COMPONENTS
   mecanumdrive_controller
   omnidrive_odometry
+  jarvis_controller
+  arduino
 )
 
 ## System dependencies are found with CMake's conventions
