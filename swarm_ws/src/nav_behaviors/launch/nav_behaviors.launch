@@ -21,8 +21,20 @@
   </node>
   
   <node pkg="jarvis_controller" type="jarvis_controller.py" name="" output="screen">
-    <param name="" value="" />
-    <param name="" value="" />
+    <param name="kp" value="1.0" />
+    <param name="ki" value="1.0" />
+    <param name="kd" value="1.0" />
+    <param name="motor_max_w" value="62.8319" />
+    <param name="motor_min_w" value="31.4159" />
+    <param name="motor_cmd_max" value="255" />
+    <param name="motor_cmd_min" value="100" />
+    <param name="pid_on" value="False" />
+    <param name="controller_on" value="True" />
+  </node>
+  
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    <param name="port"  type="string" value="/dev/ttyACM0"/>
+    <param name="baud"  type="int"    value="57600"/>
   </node>
 
 </launch>
