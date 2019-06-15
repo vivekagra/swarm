@@ -35,7 +35,13 @@ class ControlsToMotors:
     
     if self.controller_on:
 		print("Controller_on")
- 
+ 	
+	# Publish the computed w velocity after applying pid on  it
+    self.front_lwheel_w_target_pub = rospy.Publisher('front_lwheel_w_target', Float32, queue_size=10)
+    self.front_rwheel_w_target_pub = rospy.Publisher('front_rwheel_w_target', Float32, queue_size=10)
+    self.rear_lwheel_w_target_pub  = rospy.Publisher('rear_lwheel_w_target' , Float32, queue_size=10)
+    self.rear_rwheel_w_target_pub  = rospy.Publisher('rear_rwheel_w_target' , Float32, queue_size=10)
+
     # Publish the computed w velocity after applying pid on  it
     self.front_lwheel_w_control_pub = rospy.Publisher('front_lwheel_w_control', Float32, queue_size=10)
     self.front_rwheel_w_control_pub = rospy.Publisher('front_rwheel_w_control', Float32, queue_size=10)
@@ -84,15 +90,19 @@ class ControlsToMotors:
   # ==================================================
   def front_lwheel_w_target_callback(self, msg):
     self.front_lwheel_w_target = msg.data
+    front_lwheel_w_target_pub.publish(self.front_lwheel_w_target)
 
   def front_rwheel_w_target_callback(self, msg):
     self.front_rwheel_w_target = msg.data
-   
+    front_rwheel_w_target_pub.publish(self.front_rwheel_w_target)
+
   def rear_lwheel_w_target_callback(self, msg):
     self.rear_lwheel_w_target = msg.data
+    rear_lwheel_w_target_pub.publish(self.rear_lwheel_w_target)
 
   def rear_rwheel_w_target_callback(self, msg):
     self.rear_rwheel_w_target = msg.data
+    rear_rwheel_w_target_pub.publish(self.rear_rwheel_w_target)
  
   # ==================================================
   # Read in encoder readings for PID
@@ -193,7 +203,7 @@ class ControlsToMotors:
     
     # If we want to adjust target w velocity using PID controller to incorporate encoder readings
     if self.pid_on: 
-      self.lwheel_w_target = self.pid_control(self.rear_lwheel_pid, self.rear_lwheel_w_target,self.rear_lwheel_w_enc)
+      self.rear_lwheel_w_target = self.pid_control(self.rear_lwheel_pid, self.rear_lwheel_w_target,self.rear_lwheel_w_enc)
     self.rear_lwheel_w_control_pub.publish(self.rear_lwheel_w_target)
 
     # Compute motor command
