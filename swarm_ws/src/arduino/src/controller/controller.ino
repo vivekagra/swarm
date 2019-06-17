@@ -3,7 +3,7 @@
 
 /******************************** Check Time or delay for motorControl ****************************************************/
 #include <ros.h>
-#include <std_msgs/Float32MultiArray.h>
+#include <std_msgs/Float32.h>
 #include <std_msgs/Int16.h>
 #include <Encoder.h>
 
@@ -86,10 +86,10 @@ void rear_rwheel_cb(const std_msgs::Int16& pwm)
 }
 
 
-std_msgs::Float32MultiArray fl_msg;
-std_msgs::Float32MultiArray fr_msg;
-std_msgs::Float32MultiArray rl_msg;
-std_msgs::Float32MultiArray rr_msg;
+std_msgs::Float32 fl_msg;
+std_msgs::Float32 fr_msg;
+std_msgs::Float32 rl_msg;
+std_msgs::Float32 rr_msg;
 
 
 ros::Subscriber<std_msgs::Int16> motor_fl("front_lwheel_w_motor",&front_lwheel_cb);
@@ -153,16 +153,15 @@ void setup()
 	pinMode(ENb_rl,OUTPUT);
 	pinMode(ENa_rr,OUTPUT);
 	pinMode(ENb_rr,OUTPUT);
-
-	fl_msg.data = (float *)malloc(sizeof(float)*2);
-	fr_msg.data = (float *)malloc(sizeof(float)*2);
-	rl_msg.data = (float *)malloc(sizeof(float)*2);
-	rr_msg.data = (float *)malloc(sizeof(float)*2);
-
-	fl_msg.data_length = 2;
-	fr_msg.data_length = 2;
-	rl_msg.data_length = 2;
-	rr_msg.data_length = 2;
+//
+//	fl_msg.data = (float *)malloc(sizeof(float)*2);
+//	fr_msg.data = (float *)malloc(sizeof(float)*2);
+//	rl_msg.data = (float *)malloc(sizeof(float)*2);
+//	rr_msg.data = (float *)malloc(sizeof(float)*2);
+  fl_msg.data = 0;
+  fr_msg.data = 0;
+  rl_msg.data = 0;
+  rr_msg.data = 0;
 
 	nh.initNode();
 	
@@ -181,16 +180,10 @@ void setup()
 void loop()
 {   
 	encoder();
-	controlMotor(255,pwmPin_fl,ENa_fl,ENb_fl);
-	fl_msg.data[0] = pwm_fl;
-	fr_msg.data[0] = pwm_fr;
-	rl_msg.data[0] = pwm_rl;
-	rr_msg.data[0] = pwm_rr;
-
-	fl_msg.data[1] = rpm_fl;
-	fr_msg.data[1] = rpm_fr;
-	rl_msg.data[1] = rpm_rl;
-	rr_msg.data[1] = rpm_rr;
+	fl_msg.data = rpm_fl;
+	fr_msg.data = rpm_fr;
+	rl_msg.data = rpm_rl;
+	rr_msg.data = rpm_rr;
   
 	encoder_fl.publish(&fl_msg);
 	encoder_fr.publish(&fr_msg);
