@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="jarvis_teleop" type="teleop_keyboard.py" name="teleop_twist_keyboard">
+    <param name="speed"  value="0.5"/>
+    <param name="turn"  value="1.0"/>
+  </node>
+	
+</launch>

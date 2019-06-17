@@ -6,22 +6,6 @@
     <param name="baud"  type="int"    value="57600"/>
   </node>
   
-  <node pkg="jarvis_teleop" type="teleop_keyboard.py" name="teleop_twist_keyboard">
-    <param name="speed"  value="0.5"/>
-    <param name="turn"  value="1.0"/>
-  </node>
-
-  <node pkg="omnidrive_odometry" type="omnidrive_odom.py" name="omnidrive_odom" output="screen">
-    <param name="rate" value="20" />
-    <param name="robot_wheel_center_horizontal_distance" value="0.125" />
-    <param name="robot_wheel_center_vertical_distance" value="0.075" />
-    <param name="robot_wheel_radius" value="0.03" />
-    <param name="robot_wheel_ticks" value="20" />
-    <param name="frame_id" value="/odom" />
-    <param name="child_frame_id" value="base_link" />
-  </node>
-
-
   <node pkg="mecanumdrive_controller" type="mecanum_drive_controller.py" name="mecanum_drive_controller" output="screen">
     <param name="rate" value="20" />
     <param name="timeout_idle" value="50" />
@@ -42,5 +26,13 @@
     <param name="controller_on" value="True" />
   </node>
   
-
+  <node pkg="omnidrive_odometry" type="omnidrive_odom.py" name="omnidrive_odom" output="screen">
+    <param name="rate" value="20" />
+    <param name="robot_wheel_center_horizontal_distance" value="0.125" />
+    <param name="robot_wheel_center_vertical_distance" value="0.075" />
+    <param name="robot_wheel_radius" value="0.03" />
+    <param name="robot_wheel_ticks" value="20" />
+    <param name="frame_id" value="/odom" />
+    <param name="child_frame_id" value="base_link" />
+  </node>
 </launch>
