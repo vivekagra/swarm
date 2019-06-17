@@ -28,6 +28,10 @@ class CmdVelToOmniDriveMotors:
     self.target_vx = 0;
     self.target_vy = 0;
     self.target_w = 0;
+    self.w_fr = 0;
+    self.w_fl = 0;
+    self.w_rl = 0;
+    self.w_rr = 0;
 
   # When given no commands for some time, do not move
   def spin(self):
@@ -56,15 +60,15 @@ class CmdVelToOmniDriveMotors:
     rospy.sleep(1)    
 
   def update(self):
-    w_fr = (1/self.R)*(self.target_vy - self.target_vx + (self.H + self.V)*self.target_w)
-    w_fl = (1/self.R)*(self.target_vy + self.target_vx - (self.H + self.V)*self.target_w)
-    w_rr = (1/self.R)*(self.target_vy - self.target_vx - (self.H + self.V)*self.target_w)
-    w_rl = (1/self.R)*(self.target_vy + self.target_vx + (self.H + self.V)*self.target_w)
+    self.w_fr = (1/self.R)*(self.target_vy - self.target_vx + (self.H + self.V)*self.target_w)
+    self.w_fl = (1/self.R)*(self.target_vy + self.target_vx - (self.H + self.V)*self.target_w)
+    self.w_rr = (1/self.R)*(self.target_vy - self.target_vx - (self.H + self.V)*self.target_w)
+    self.w_rl = (1/self.R)*(self.target_vy + self.target_vx + (self.H + self.V)*self.target_w)
     
-    self.front_rwheel_w_target_pub.publish(w_fr)
-    self.front_lwheel_w_target_pub.publish(w_fl)
-    self.rear_rwheel_w_target_pub.publish(w_rr)
-    self.rear_lwheel_w_target_pub.publish(w_rl)
+    self.front_rwheel_w_target_pub.publish(self.w_fr)
+    self.front_lwheel_w_target_pub.publish(self.w_fl)
+    self.rear_rwheel_w_target_pub.publish(self.w_rr)
+    self.rear_lwheel_w_target_pub.publish(self.w_rl)
 
   def twistCallback(self,msg):
     self.target_vx = msg.linear.x;

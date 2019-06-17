@@ -1,6 +1,16 @@
 <?xml version="1.0"?>
 <launch>
 
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    <param name="port"  type="string" value="/dev/ttyUSB0"/>
+    <param name="baud"  type="int"    value="57600"/>
+  </node>
+  
+  <node pkg="jarvis_teleop" type="teleop_keyboard.py" name="teleop_twist_keyboard">
+    <param name="speed"  value="0.5"/>
+    <param name="turn"  value="1.0"/>
+  </node>
+
   <node pkg="omnidrive_odometry" type="omnidrive_odom.py" name="omnidrive_odom" output="screen">
     <param name="rate" value="20" />
     <param name="robot_wheel_center_horizontal_distance" value="0.125" />
@@ -32,9 +42,5 @@
     <param name="controller_on" value="True" />
   </node>
   
-  <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
-    <param name="port"  type="string" value="/dev/ttyACM0"/>
-    <param name="baud"  type="int"    value="57600"/>
-  </node>
 
 </launch>

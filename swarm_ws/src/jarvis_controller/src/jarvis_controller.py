@@ -37,10 +37,10 @@ class ControlsToMotors:
 		print("Controller_on")
  	
 	# Publish the computed w velocity after applying pid on  it
-    self.front_lwheel_w_target_pub = rospy.Publisher('front_lwheel_w_target', Float32, queue_size=10)
-    self.front_rwheel_w_target_pub = rospy.Publisher('front_rwheel_w_target', Float32, queue_size=10)
-    self.rear_lwheel_w_target_pub  = rospy.Publisher('rear_lwheel_w_target' , Float32, queue_size=10)
-    self.rear_rwheel_w_target_pub  = rospy.Publisher('rear_rwheel_w_target' , Float32, queue_size=10)
+    #self.front_lwheel_w_target_pub = rospy.Publisher('front_lwheel_w_target', Float32, queue_size=10)
+    #self.front_rwheel_w_target_pub = rospy.Publisher('front_rwheel_w_target', Float32, queue_size=10)
+    #self.rear_lwheel_w_target_pub  = rospy.Publisher('rear_lwheel_w_target' , Float32, queue_size=10)
+    #self.rear_rwheel_w_target_pub  = rospy.Publisher('rear_rwheel_w_target' , Float32, queue_size=10)
 
     # Publish the computed w velocity after applying pid on  it
     self.front_lwheel_w_control_pub = rospy.Publisher('front_lwheel_w_control', Float32, queue_size=10)
@@ -78,6 +78,18 @@ class ControlsToMotors:
     self.rear_lwheel_w_enc = 0
     self.rear_rwheel_w_enc = 0
 
+    # target velocity after applying control algorithm
+    self.front_lwheel_control_cmd = 0
+    self.front_rwheel_control_cmd = 0
+    self.rear_lwheel_control_cmd = 0
+    self.rear_rwheel_control_cmd = 0
+    
+    # motor commands
+    self.front_lwheel_motor_cmd = 0
+    self.front_rwheel_motor_cmd = 0
+    self.rear_lwheel_motor_cmd = 0
+    self.rear_rwheel_motor_cmd = 0
+    
     # PID control variables
     self.front_lwheel_pid = {}
     self.front_rwheel_pid = {}
@@ -90,19 +102,15 @@ class ControlsToMotors:
   # ==================================================
   def front_lwheel_w_target_callback(self, msg):
     self.front_lwheel_w_target = msg.data
-    front_lwheel_w_target_pub.publish(self.front_lwheel_w_target)
 
   def front_rwheel_w_target_callback(self, msg):
     self.front_rwheel_w_target = msg.data
-    front_rwheel_w_target_pub.publish(self.front_rwheel_w_target)
 
   def rear_lwheel_w_target_callback(self, msg):
     self.rear_lwheel_w_target = msg.data
-    rear_lwheel_w_target_pub.publish(self.rear_lwheel_w_target)
 
   def rear_rwheel_w_target_callback(self, msg):
     self.rear_rwheel_w_target = msg.data
-    rear_rwheel_w_target_pub.publish(self.rear_rwheel_w_target)
  
   # ==================================================
   # Read in encoder readings for PID
@@ -178,49 +186,53 @@ class ControlsToMotors:
   def front_lwheel_update(self):
     
     # If we want to adjust target w velocity using PID controller to incorporate encoder readings
+    #self.front_lwheel_w_target_pub.publish(self.front_lwheel_w_target)    
     if self.pid_on: 
       self.front_lwheel_w_target = self.pid_control(self.front_lwheel_pid, self.front_lwheel_w_target,self.front_lwheel_w_enc)
     self.front_lwheel_w_control_pub.publish(self.front_lwheel_w_target)
 
     # Compute motor command
-    front_lwheel_motor_cmd = self.wvel_2_motorcmd(self.front_lwheel_w_target)
-    self.front_lwheel_w_motor_pub.publish(front_lwheel_motor_cmd)    
+    self.front_lwheel_motor_cmd = self.wvel_2_motorcmd(self.front_lwheel_w_target)
+    self.front_lwheel_w_motor_pub.publish(self.front_lwheel_motor_cmd)    
 
 
   def front_rwheel_update(self):
     
     # If we want to adjust target w velocity using PID controller to incorporate encoder readings
+    #self.front_rwheel_w_target_pub.publish(self.front_rwheel_w_target)    
     if self.pid_on: 
       self.front_rwheel_w_target = self.pid_control(self.front_rwheel_pid, self.front_rwheel_w_target,self.front_rwheel_w_enc)
     self.front_rwheel_w_control_pub.publish(self.front_rwheel_w_target)
 
     # Compute motor command
-    front_rwheel_motor_cmd = self.wvel_2_motorcmd(self.front_rwheel_w_target)
-    self.front_rwheel_w_motor_pub.publish(front_rwheel_motor_cmd)    
+    self.front_rwheel_motor_cmd = self.wvel_2_motorcmd(self.front_rwheel_w_target)
+    self.front_rwheel_w_motor_pub.publish(self.front_rwheel_motor_cmd)    
 
 
   def rear_lwheel_update(self):
     
     # If we want to adjust target w velocity using PID controller to incorporate encoder readings
+    #self.rear_lwheel_w_target_pub.publish(self.rear_lwheel_w_target)    
     if self.pid_on: 
       self.rear_lwheel_w_target = self.pid_control(self.rear_lwheel_pid, self.rear_lwheel_w_target,self.rear_lwheel_w_enc)
     self.rear_lwheel_w_control_pub.publish(self.rear_lwheel_w_target)
 
     # Compute motor command
-    rear_lwheel_motor_cmd = self.wvel_2_motorcmd(self.rear_lwheel_w_target)
-    self.rear_lwheel_w_motor_pub.publish(rear_lwheel_motor_cmd)    
+    self.rear_lwheel_motor_cmd = self.wvel_2_motorcmd(self.rear_lwheel_w_target)
+    self.rear_lwheel_w_motor_pub.publish(self.rear_lwheel_motor_cmd)    
 
 
   def rear_rwheel_update(self):
     
     # If we want to adjust target w velocity using PID controller to incorporate encoder readings
+    #self.rear_rwheel_w_target_pub.publish(self.rear_rwheel_w_target)    
     if self.pid_on: 
       self.rear_rwheel_w_target = self.pid_control(self.rear_rwheel_pid, self.rear_rwheel_w_target,self.rear_rwheel_w_enc)
     self.rear_rwheel_w_control_pub.publish(self.rear_rwheel_w_target)
 
     # Compute motor command
-    rear_rwheel_motor_cmd = self.wvel_2_motorcmd(self.rear_rwheel_w_target)
-    self.rear_rwheel_w_motor_pub.publish(rear_rwheel_motor_cmd)    
+    self.rear_rwheel_motor_cmd = self.wvel_2_motorcmd(self.rear_rwheel_w_target)
+    self.rear_rwheel_w_motor_pub.publish(self.rear_rwheel_motor_cmd)    
 
 
   # When given no commands for some time, do not move
@@ -242,10 +254,10 @@ class ControlsToMotors:
   def shutdown(self):
     rospy.loginfo("Shutting down  jarvis_controller")
   	# Stop message
-    self.front_lwheel_w_target_pub.publish(0)
-    self.front_rwheel_w_target_pub.publish(0)
-    self.rear_lwheel_w_target_pub.publish(0)
-    self.rear_rwheel_w_target_pub.publish(0)
+    #self.front_lwheel_w_target_pub.publish(0)
+    #self.front_rwheel_w_target_pub.publish(0)
+    #self.rear_lwheel_w_target_pub.publish(0)
+    #self.rear_rwheel_w_target_pub.publish(0)
     
     self.front_lwheel_w_control_pub.publish(0)
     self.front_rwheel_w_control_pub.publish(0)

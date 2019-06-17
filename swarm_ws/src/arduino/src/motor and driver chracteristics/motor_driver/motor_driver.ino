@@ -13,18 +13,18 @@ ros::Publisher encoder("encoder", &msg);
 Encoder myEnc_fl(8, 9);
 // pin settings
 int pwm_fl = 2;
-int pwm_bl = 3;
-int pwm_fr = 4;
-int pwm_br = 5;
+int pwm_fr = 3;
+int pwm_rl = 4;
+int pwm_rr = 5;
 
 int INa_fl = 22;
 int INb_fl = 23;
-int INa_bl = 24;
-int INb_bl = 25;
-int INa_fr = 26;
-int INb_fr = 27;
-int INa_br = 28;
-int INb_br = 29;
+int INa_fr = 24;
+int INb_fr = 25;
+int INa_rl = 26;
+int INb_rl = 27;
+int INa_rr = 28;
+int INb_rr = 29;
 
 
 void setup() {
@@ -35,21 +35,21 @@ void setup() {
     msg.data_length = 2;
     // set pins to output
     pinMode(pwm_fl, OUTPUT);
-    pinMode(pwm_bl, OUTPUT);
     pinMode(pwm_fr, OUTPUT);
-    pinMode(pwm_br, OUTPUT);
+    pinMode(pwm_rr, OUTPUT);
+    pinMode(pwm_rl, OUTPUT);
     
     pinMode(INa_fl, OUTPUT);
     pinMode(INb_fl, OUTPUT);
     
-    pinMode(INa_bl, OUTPUT);
-    pinMode(INb_bl, OUTPUT);
-    
     pinMode(INa_fr, OUTPUT);
     pinMode(INb_fr, OUTPUT);
     
-    pinMode(INa_br, OUTPUT);
-    pinMode(INb_br, OUTPUT);
+    pinMode(INa_rl, OUTPUT);
+    pinMode(INb_rl, OUTPUT);
+    
+    pinMode(INa_rr, OUTPUT);
+    pinMode(INb_rr, OUTPUT);
 
 
 
@@ -77,11 +77,6 @@ void control_motor(int speed, int pwmPin, int INaPin, int INbPin){
         digitalWrite(INbPin, LOW);
     }
 }
-
-// In time loop, receive from serial and control 4 motors
-// 280 count per revolutin is encoder precision
-long oldPosition  = myEnc_fl.read();
-long x = oldPosition;
 void loop() {
     int i = 0;
 
@@ -89,26 +84,10 @@ void loop() {
     for(i=0;i<256;i++)
     {
       // control motors
-      control_motor(100, pwm_fl, INa_fl, INb_fl);
-      control_motor(0, pwm_bl, INa_bl, INb_bl);
-      control_motor(0, pwm_fr, INa_fr, INb_fr);
-      control_motor(0, pwm_br, INa_br, INb_br);
+      control_motor(255, pwm_fl, INa_fl, INb_fl);
+      control_motor(255, pwm_fr, INa_fr, INb_fr);
+      control_motor(255, pwm_rl, INa_rl, INb_rl);
+      control_motor(255, pwm_rr, INa_rr, INb_rr);
 
-      int t0 = millis();
-      int t1 = millis();
-      long newPosition = myEnc_fl.read();
-      x = newPosition;
-      while(t1-t0<1000)
-      {
-        if(oldPosition!=newPosition)
-        {
-          oldPosition = newPosition;
-        }
-        t1 = millis();  
-      }
-      float rpm = ((newPosition -  x)*60)/float(280);
-      msg.data[0] = 100;
-      msg.data[1] = rpm;
-      encoder.publish( &msg );  
     }
 }
