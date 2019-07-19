@@ -33,7 +33,7 @@ void setup()
     /*Change the following command as per your requirement i.e. enter the 
     SSID and Password of your WiFi Network in the command.*/
     
-    esp8266Data("AT+CWJAP=\"SSID\",\"PASSWORD\"\r\n", 5000, DEBUG);//Enter your WiFi network's SSID and Password.
+    esp8266Data("AT+CWJAP=\"DisCon_LAB",\"discon-lab"\r\n", 5000, DEBUG);//Enter your WiFi network's SSID and Password.
                                    
     /*while(!esp8266Serial.find("OK")) 
     {

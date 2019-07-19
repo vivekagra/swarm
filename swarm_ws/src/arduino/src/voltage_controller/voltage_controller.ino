@@ -73,7 +73,7 @@ void loop()
   // measure rpm for every second
   oldPos = myEnc.read();
   newPos = myEnc.read();
-  while(t1-t0<250)
+  while(t1-t0<2)
   {
     controlMotor(pwm, ENA, IN1, IN2);
     newPos = myEnc.read();		
@@ -81,9 +81,9 @@ void loop()
   }
 
   // calculate rpm;
-  float rpm = (float(newPos-oldPos))*240/280;
+  float rpm = (float(newPos-oldPos))*30000/280;
   // publish data
-  msg.data[0] = millis()-T;
+  msg.data[0] = float(millis()-T)/1000;
 
   msg.data[1] = rpm;
   //Serial.print(pwm);Serial.print(" -> ");Serial.print(voltage);Serial.print(" -> ");Serial.println(rpm);
