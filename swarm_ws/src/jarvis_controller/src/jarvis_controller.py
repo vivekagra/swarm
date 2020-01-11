@@ -6,7 +6,7 @@ import roslib
 from std_msgs.msg import Float32
 from std_msgs.msg import Int16
 
-# Issue commands to the motors to achieve the target velocity
+# This code commands signal to the motors to achieve the target velocity
 # Use a PID that compares the error based on encoder readings
 class ControlsToMotors:
   def __init__(self):
@@ -237,7 +237,7 @@ class ControlsToMotors:
 
   # When given no commands for some time, do not move
   def spin(self):
-    rospy.loginfo("Starting jarvis_controller")
+    rospy.loginfo("Initiating jarvis_controller")
     rate = rospy.Rate(self.rate)
     
     rospy.on_shutdown(self.shutdown)
@@ -252,7 +252,7 @@ class ControlsToMotors:
 
 
   def shutdown(self):
-    rospy.loginfo("Shutting down  jarvis_controller")
+    rospy.loginfo("Terminating  jarvis_controller")
   	# Stop message
     #self.front_lwheel_w_target_pub.publish(0)
     #self.front_rwheel_w_target_pub.publish(0)

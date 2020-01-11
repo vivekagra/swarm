@@ -12,14 +12,14 @@ ros::Publisher encoder("encoder", &msg);
 
 
 // Encoder Instances
-Encoder myEnc(10, 11);
+Encoder myEnc(2, 3);
 
 
 // pin settings
 int ENA = 4;
 
-int IN1 = 26;
-int IN2 = 27;
+int IN1 = 5;
+int IN2 = 6;
 
 // take initial enocder readings
 long long oldPos = myEnc.read();
@@ -55,9 +55,9 @@ void setup()
 	pinMode(IN1,OUTPUT);
 	pinMode(IN2,OUTPUT);
 
-	msg.data = (float *)malloc(sizeof(float)*3);
+	msg.data = (float *)malloc(sizeof(float)*2);
 
-	msg.data_length = 3;
+	msg.data_length = 2;
 
 	nh.initNode();
 	nh.advertise(encoder);
@@ -75,7 +75,7 @@ void loop()
   newPos = myEnc.read();
   while(t1-t0<2)
   {
-    controlMotor(pwm, ENA, IN1, IN2);
+    controlMotor(255, ENA, IN1, IN2);
     newPos = myEnc.read();		
     t1=millis();
   }
