@@ -6,7 +6,7 @@ import roslib
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float32
 
-class CmdVelToOmniDriveMotors:
+class CmdVelToMotors:
   def __init__(self):
     rospy.init_node('mecanumdrive_controller')
     self.cmdvel_sub = rospy.Subscriber('cmd_vel', Twist, self.twistCallback)
@@ -23,7 +23,7 @@ class CmdVelToOmniDriveMotors:
 
     self.rate = rospy.get_param('~rate', 50)
     self.timeout_idle = rospy.get_param('~timeout_idle', 2)
-    self.time_prev_update = rospy.Time.now()
+    self.time_prev = rospy.Time.now()
 
     self.target_vx = 0;
     self.target_vy = 0;
@@ -35,21 +35,21 @@ class CmdVelToOmniDriveMotors:
 
   # When given no commands for some time, do not move
   def spin(self):
-    rospy.loginfo("Start Omnidrive_controller")
+    rospy.loginfo("Initiaitng MecanumDrive_controller")
     rate = rospy.Rate(self.rate)
-    time_curr_update = rospy.Time.now()
+    time_curr = rospy.Time.now()
     
     rospy.on_shutdown(self.shutdown)
 
     while not rospy.is_shutdown():
-      time_diff_update = (time_curr_update - self.time_prev_update).to_sec()
-      if time_diff_update < self.timeout_idle: # Only move if command given recently
+      time_diff = (time_curr - self.time_prev).to_sec()
+      if time_diff < self.timeout_idle: # Only move if command given recently
         self.update();
       rate.sleep()
     rospy.spin();
 
   def shutdown(self):
-    rospy.loginfo("Stop Omnidrive_controller")
+    rospy.loginfo("Terminating MecanumDrive_controller")
   	# Stop message
 
     self.front_lwheel_w_target_pub.publish(0)
@@ -74,11 +74,11 @@ class CmdVelToOmniDriveMotors:
     self.target_vx = msg.linear.x;
     self.target_vy = msg.linear.y;
     self.target_w = msg.angular.z;
-    self.time_prev_update = rospy.Time.now()
+    self.time_prev = rospy.Time.now()
 
 
 def main():
-  cmdvel_to_motors = CmdVelToOmniDriveMotors();
+  cmdvel_to_motors = CmdVelToMotors();
   cmdvel_to_motors.spin()
 
 if __name__ == '__main__':
