@@ -44,22 +44,21 @@ class CmdVelToMotors:
     while not rospy.is_shutdown():
       time_diff = (time_curr - self.time_prev).to_sec()
       if time_diff < self.timeout_idle: # Only move if command given recently
-        self.update();
+        self.wheel_velocity_update();
+      else:
+        self.stop()
       rate.sleep()
+      
+
     rospy.spin();
 
   def shutdown(self):
     rospy.loginfo("Terminating MecanumDrive_controller")
-  	# Stop message
-
-    self.front_lwheel_w_target_pub.publish(0)
-    self.front_rwheel_w_target_pub.publish(0)
-    self.rear_lwheel_w_target_pub.publish(0)
-    self.rear_rwheel_w_target_pub.publish(0)
-
+    # Stop message
+    self.stop()
     rospy.sleep(1)    
 
-  def update(self):
+  def wheel_velocity_update(self):
     self.w_fr = (1/self.R)*(self.target_vy - self.target_vx + (self.H + self.V)*self.target_w)
     self.w_fl = (1/self.R)*(self.target_vy + self.target_vx - (self.H + self.V)*self.target_w)
     self.w_rr = (1/self.R)*(self.target_vy - self.target_vx - (self.H + self.V)*self.target_w)
@@ -75,6 +74,12 @@ class CmdVelToMotors:
     self.target_vy = msg.linear.y;
     self.target_w = msg.angular.z;
     self.time_prev = rospy.Time.now()
+
+  def stop(self):
+    self.front_lwheel_w_target_pub.publish(0)
+    self.front_rwheel_w_target_pub.publish(0)
+    self.rear_lwheel_w_target_pub.publish(0)
+    self.rear_rwheel_w_target_pub.publish(0)
 
 
 def main():
